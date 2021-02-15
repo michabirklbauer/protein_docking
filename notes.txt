@@ -1,0 +1,23 @@
+(Rough) Summary:
+Calculating most important amino acid interactions in protein dockings.
+
+When docking two things are important:
+* How well does molecule fit
+* Which interactions are there
+First aspect is not enough as a small molecule would almost get a very good fit. Goal is
+to compute a score of both aspects -> some interactions are more important than others ->
+find those.
+
+
+Database:
+DUD-E
+Directory of useful decoys
+http://dude.docking.org
+
+Tools:
+GOLD
+
+
+Autodock
+Autodock Vina
+http://vina.scripps.edu/
