@@ -1,0 +1,4 @@
+# ignore DUDE data
+# e.g. all.tar.gz
+#    + extracted archive
+data_1/*
