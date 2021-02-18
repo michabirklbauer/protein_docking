@@ -1,0 +1,21 @@
+List of Protein-Ligand Docking Software:
+https://en.wikipedia.org/wiki/List_of_protein-ligand_docking_software
+
+Rosetta:
+https://www.rosettacommons.org/software/license-and-download
+http://www.pyrosetta.org/
+
+pyGOLD:
+https://academic.oup.com/bioinformatics/article/33/16/2589/3111840
+
+Paper for Autodock:
+https://pubmed.ncbi.nlm.nih.gov/27077332/
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4868550/
+
+Maybe useful R packages:
+https://github.com/nanxstats/Rcpi
+https://cran.r-project.org/web/packages/BioMedR/index.html
+https://academic.oup.com/bioinformatics/article/22/21/2695/252414
+
+Topic on GitHub:
+https://github.com/topics/protein-ligand-docking
