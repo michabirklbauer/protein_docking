@@ -4,4 +4,6 @@
 data_1/*
 
 # ignore all installers
+# list of installers:
+#   + AutoDock Vina
 installers/*
