@@ -2,3 +2,6 @@
 # e.g. all.tar.gz
 #    + extracted archive
 data_1/*
+
+# ignore all installers
+installers/*
