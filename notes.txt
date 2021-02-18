@@ -8,7 +8,6 @@ First aspect is not enough as a small molecule would almost get a very good fit.
 to compute a score of both aspects -> some interactions are more important than others ->
 find those.
 
-
 Database:
 DUD-E
 Directory of useful decoys
@@ -17,7 +16,25 @@ http://dude.docking.org
 Tools:
 GOLD
 
-
 Autodock
 Autodock Vina
 http://vina.scripps.edu/
+
+Docking Algorithms:
+[also see "Biomedizinische Datenanalyse II-Teil3.pdf", p. 63]
++ Force field-based
++ Evolutionary
++ Fragment-based incremental
++ Shape complementary-based
+
+Different Scoring Functions:
+[also see "Biomedizinische Datenanalyse II-Teil3.pdf", p. 63]
++ Stand alone
+  - Force field-based
+  - Knowledge-based
+  - Empirical
++ Tailored
++ Consensus
++ Supervised consensus
++ Feature selection-based consensus
++ MM-PBSA (re)-scoring
