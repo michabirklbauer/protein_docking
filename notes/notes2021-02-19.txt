@@ -1,0 +1,17 @@
+PLIP
+https://academic.oup.com/nar/article/43/W1/W443/2467865
+https://plip-tool.biotec.tu-dresden.de/plip-web/plip/index
+
+DUDE
+Filtern nach interessanten Targets.
+
+DATA
+splitting 80-20 training testing
+
+
+soluble epoxide hydrolase <- guter start
+EC Klassifizierung / EC Nr. -> alle Einträge die dieses Enzym beschreiben, sortieren
+COX
+
+NEXT MEETING
+Freitag 9:00 -> next meeting!
