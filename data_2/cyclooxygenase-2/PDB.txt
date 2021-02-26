@@ -5,5 +5,7 @@ http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%
 ;
 NR_ENTRIES:
 7;
+FILTERS:
+only COX-2;
 PDB_ENTRIES:
 5IKR,5IKQ,5IKT,5IKV,5KIR,5F19,5F1A;
