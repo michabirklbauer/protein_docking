@@ -1,0 +1,3 @@
+EXAMPLE PLIP RESULT:
+https://plip-tool.biotec.tu-dresden.de/plip-web/plip/result/18801170-6cfb-4f5f-8a99-a1b42965412b
+(available for 30 days; query: 4hai)
