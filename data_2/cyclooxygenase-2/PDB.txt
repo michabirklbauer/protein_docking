@@ -1,0 +1,6 @@
+PDB_QUERY:
+Enzyme Classification Number = "1.14.99.1" AND Scientific Name of Source Organism = "Homo sapiens";
+NR_ENTRIES:
+7;
+PDB_ENTRIES:
+5IKR,5IKQ,5IKT,5IKV,5KIR,5F19,5F1A;
