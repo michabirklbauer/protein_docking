@@ -3,9 +3,11 @@ Enzyme Classification Number = "3.3.2.10" AND Scientific Name of Source Organism
 PDB_LINK:
 http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22operator%22%3A%22exact_match%22%2C%22negation%22%3Afalse%2C%22value%22%3A%223.3.2.10%22%2C%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%7D%2C%22node_id%22%3A0%7D%5D%7D%5D%2C%22label%22%3A%22text%22%7D%5D%2C%22label%22%3A%22query-builder%22%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Homo%20sapiens%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A100%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22score%22%2C%22direction%22%3A%22desc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%221771291d407161b67f4c5a9694b81c69%22%7D%7D
 ;
+PDB_ORGANISM:
+Homo sapiens;
 NR_ENTRIES:
 106;
 FILTERS:
-Ligands;
+Only entries with ligands;
 PDB_ENTRIES:
 6I5G,1S8O,4HAI,3OTQ,3KOO,4C4X,4C4Y,4C4Z,4JNC,4OCZ,4OD0,3I28,3I1Y,3ANS,3ANT,4J03,4X6X,4X6Y,5AI6,5AI5,5AI8,5AHX,5AI9,5AI0,5AI4,5AIB,5AIA,5AIC,5AK4,5AK3,5AK6,5AK5,5AKX,5AKZ,5AKY,5AKH,5AKG,5AKJ,5AKI,5AKL,5AKK,5AKE,4Y2J,4Y2U,4Y2V,4Y2X,4Y2Y,4Y2P,4Y2Q,4Y2R,4Y2S,4Y2T,5FP0,5ALY,5ALX,5ALZ,5ALQ,5AM2,5ALP,5AM1,5ALS,5AM4,5ALR,5AM3,5ALU,5ALT,5AM5,5ALW,5ALV,5ALI,5ALH,5ALK,5ALJ,5ALM,5ALL,5ALO,5AM0,5ALN,5ALE,5ALD,5ALG,5ALF,6AUM,5MWA,6HGV,6HGX,6HGW,6FR2,3PDC,3WKA,3WKB,3WKC,3WKD,3WKE,3WK7,3WK8,3WK9,3WK4,3WK5,3WK6,6YL4,1ZD2,1ZD5,1ZD4,1ZD3,1VJ5;
