@@ -1,0 +1,17 @@
+PDB_QUERY:
+Enzyme Classification Number = "1.14.99.1" AND Scientific Name of Source Organism = "Mus musculus";
+PDB_LINK:
+http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22operator%22%3A%22exact_match%22%2C%22negation%22%3Afalse%2C%22value%22%3A%221.14.99.1%22%2C%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%7D%2C%22node_id%22%3A0%7D%5D%7D%5D%2C%22label%22%3A%22text%22%7D%5D%2C%22label%22%3A%22query-builder%22%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Mus%20musculus%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A25%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22rcsb_entry_container_identifiers.entry_id%22%2C%22direction%22%3A%22asc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%22191fd8ab52e505223ac14d76d23ef029%22%7D%7D
+;
+PDB_ORGANISM:
+Mus musculus;
+NR_ENTRIES:
+44;
+FILTERS:
+only COX-2, only mol. with ligands, no mutants;
+PDB_ENTRIES:
+1CVU,1CX2,1DDX,1PXX,3HS5,3HS6,3HS7,3KRK,3LN0,3LN1,
+3MDL,3MQE,3NT1,3NTB,3NTG,3OLT,3OLU,3PGH,3Q7D,3QH0,
+3QMO,3RR3,3TZI,4COX,4E1G,4FM5,4M10,4M11,4OTJ,4OTY,
+4PH9,4RRW,4RRX,4RRY,4RRZ,4RS0,4RUT,4Z0L,5W58,6BL3,
+6BL4,6COX,6OFY,6V3R;

@@ -1,0 +1,22 @@
+PDB_QUERY:
+Enzyme Classification Number = "3.4.14.5" AND Scientific Name of Source Organism = "Homo sapiens";
+PDB_LINK:
+http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22operator%22%3A%22exact_match%22%2C%22negation%22%3Afalse%2C%22value%22%3A%223.4.14.5%22%2C%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%7D%2C%22node_id%22%3A0%7D%5D%7D%5D%2C%22label%22%3A%22text%22%7D%5D%2C%22label%22%3A%22query-builder%22%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Homo%20sapiens%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A50%2C%22rows%22%3A25%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22rcsb_entry_container_identifiers.entry_id%22%2C%22direction%22%3A%22asc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%22864e16d8056c3df4ea760b4d9e1a899b%22%7D%7D
+;
+PDB_ORGANISM:
+Homo sapiens;
+NR_ENTRIES:
+98;
+FILTERS:
+no mutants, no mol. without ligands, only dpp4;
+PDB_ENTRIES:
+1N1M,1NU8,1R9N,1RWQ,1TKR,1W1I,1WCY,1X70,2AJL,2BGN,
+2BGR,2BUB,2FJP,2G5P,2G5T,2G63,2HHA,2I03,2I78,2IIT,
+2IIV,2JID,2OAG,2OGZ,2OLE,2ONC,2OPH,2OQI,2OQV,2P8S,
+2QJR,2QKY,2QOE,2QT9,2QTB,2RGU,2RIP,3BJM,3C43,3C45,
+3CCB,3CCC,3D4L,3EIO,3F8S,3G0B,3G0C,3G0D,3G0G,3H0C,
+3HAB,3HAC,3KWF,3KWJ,3NOX,3O95,3O9V,3OC0,3OPM,3Q0T,
+3Q8W,3QBJ,3SWW,3SX4,3VJK,3VJL,3VJM,3W2T,3WQH,4A5S,
+4DSA,4DSZ,4DTC,4G1F,4J3J,4JH0,4KR0,4L72,4LKO,4N8D,
+4N8E,4PNZ,4PV7,4QZV,5I7U,5ISM,5J3J,5KBY,5T4B,5T4E,
+5T4F,5T4H,5Y7H,5Y7J,5Y7K,5ZID,6B1E,6B1O;

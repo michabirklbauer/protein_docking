@@ -1,0 +1,17 @@
+PDB_QUERY:
+Enzyme Classification Number = "1.4.3.4" AND Scientific Name of Source Organism = "Homo sapiens";
+PDB_LINK:
+http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22operator%22%3A%22exact_match%22%2C%22negation%22%3Afalse%2C%22value%22%3A%221.4.3.4%22%2C%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%7D%2C%22node_id%22%3A0%7D%5D%7D%5D%2C%22label%22%3A%22text%22%7D%5D%2C%22label%22%3A%22query-builder%22%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Homo%20sapiens%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A25%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22rcsb_entry_container_identifiers.entry_id%22%2C%22direction%22%3A%22asc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%220bfdc9c6a4de9e228c348ecf5f879424%22%7D%7D
+;
+PDB_ORGANISM:
+Homo sapiens;
+NR_ENTRIES:
+47;
+FILTERS:
+only B;
+PDB_ENTRIES:
+1GOS,1OJ9,1OJA,1OJC,1OJD,1S2Q,1S2Y,1S3B,1S3E,2BK3,
+2BK4,2BK5,2BYB,2C64,2C65,2C66,2C67,2C70,2C72,2C73,
+2C75,2C76,2V5Z,2V60,2V61,2VRL,2VRM,2VZ2,2XCG,2XFN,
+2XFO,2XFP,2XFQ,2XFU,3PO7,3ZYX,4A79,4A7A,4CRT,5MRL,
+6FVZ,6FW0,6FWC,6RKB,6RKP,6RLE,6YT2;

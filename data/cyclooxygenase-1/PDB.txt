@@ -6,8 +6,8 @@ http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%
 PDB_ORGANISM:
 Homo sapiens;
 NR_ENTRIES:
-7;
+1;
 FILTERS:
-only COX-2, only mol. with ligands;
+only COX-1, only mol. with ligands;
 PDB_ENTRIES:
-5IKR,5IKQ,5IKT,5IKV,5KIR,5F1A;
+none;

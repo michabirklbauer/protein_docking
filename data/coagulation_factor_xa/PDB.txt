@@ -1,0 +1,25 @@
+PDB_QUERY:
+Enzyme Classification Number = "3.4.21.6" AND Scientific Name of Source Organism = "Homo sapiens";
+PDB_LINK:
+http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22operator%22%3A%22exact_match%22%2C%22negation%22%3Afalse%2C%22value%22%3A%223.4.21.6%22%2C%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%7D%2C%22node_id%22%3A0%7D%5D%7D%5D%2C%22label%22%3A%22text%22%7D%5D%2C%22label%22%3A%22query-builder%22%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Homo%20sapiens%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A100%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22score%22%2C%22direction%22%3A%22desc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%22f1330fd8f22f8348ae40b5517a3bd96e%22%7D%7D
+;
+PDB_ORGANISM:
+Homo sapiens;
+NR_ENTRIES:
+129;
+FILTERS:
+only mol. with ligands;
+PDB_ENTRIES:
+1EZQ,1F0R,1F0S,1FAX,1FJS,1G2L,1G2M,1IOE,1IQE,1IQF,
+1IQG,1IQH,1IQI,1IQJ,1IQK,1IQL,1IQM,1IQN,1KSN,1LPG,
+1LPK,1LPZ,1LQD,1MQ5,1MQ6,1NFU,1NFW,1NFX,1NFY,1P0S,
+1V3X,1WU1,1XKA,1XKB,1Z6E,2BMG,2BOH,2BOK,2BQ6,2BQ7,
+2BQW,2CJI,2D1J,2EI6,2EI7,2EI8,2FZZ,2G00,2J2U,2J34,
+2J38,2J4I,2J94,2J95,2JKH,2P16,2P3T,2P3U,2P93,2P94,
+2P95,2PHB,2PR3,2Q1J,2RA0,2UWL,2UWO,2UWP,2VH0,2VH6,
+2VVC,2VVU,2VVV,2VWL,2VWM,2VWN,2VWO,2W26,2W3I,2W3K,
+2WYG,2WYJ,2XBV,2XBW,2XBX,2XBY,2XC0,2XC4,2XC5,2Y5F,
+2Y5G,2Y5H,2Y7X,2Y7Z,2Y80,2Y81,2Y82,3CEN,3CS7,3ENS,
+3FFG,3HPT,3IIT,3K9X,3KL6,3KQB,3KQC,3KQD,3KQE,3LIW,
+3M36,3M37,3Q3K,3SW2,3TK5,3TK6,4A7I,4BTI,4BTT,4BTU,
+4Y6D,4Y71,4Y76,4Y79,4Y7A,4Y7B,4ZH8,4ZHA,5K0H;

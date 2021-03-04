@@ -1,0 +1,18 @@
+PDB_QUERY:
+Enzyme Classification Number = "3.1.1.7" AND Scientific Name of Source Organism = "Homo sapiens";
+PDB_LINK:
+http://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_polymer_entity.rcsb_ec_lineage.id%22%2C%22negation%22%3Afalse%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%223.1.1.7%22%7D%2C%22node_id%22%3A0%7D%2C%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22and%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22group%22%2C%22logical_operator%22%3A%22or%22%2C%22nodes%22%3A%5B%7B%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22parameters%22%3A%7B%22attribute%22%3A%22rcsb_entity_source_organism.ncbi_scientific_name%22%2C%22operator%22%3A%22exact_match%22%2C%22value%22%3A%22Homo%20sapiens%22%7D%2C%22node_id%22%3A1%7D%5D%7D%5D%2C%22label%22%3A%22refinements%22%7D%5D%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A25%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22rcsb_entry_container_identifiers.entry_id%22%2C%22direction%22%3A%22asc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%22dcb4e473fcda34d26d193c4fbcec4189%22%7D%7D
+;
+PDB_ORGANISM:
+Homo sapiens;
+NR_ENTRIES:
+53;
+FILTERS:
+only mol. with ligands;
+PDB_ENTRIES:
+1B41,1F8U,2X8B,3LII,4BDT,4EY4,4EY5,4EY6,4EY7,4EY8,
+4M0E,4M0F,5FPQ,5HF5,5HF6,5HF8,5HF9,5HFA,5HQ3,6CQT,
+6CQU,6CQV,6CQW,6CQX,6CQY,6CQZ,6F25,6NEA,6NTG,6NTH,
+6NTK,6NTL,6NTM,6NTN,6NTO,6O4W,6O4X,6O50,6O52,6O5R,
+6O5S,6O5V,6O66,6U34,6U37,6U3P,6WUV,6WUY,6WUZ,6WV1,
+6WVC,6WVP,6WVQ;
