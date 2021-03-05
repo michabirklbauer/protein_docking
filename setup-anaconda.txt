@@ -1,0 +1,5 @@
+conda install -c conda-forge openbabel
+conda install pip
+pip install numpy
+pip install lxml
+conda install plip --no-deps

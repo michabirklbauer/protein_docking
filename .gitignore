@@ -5,5 +5,11 @@ data_1/*
 
 # ignore all installers
 # list of installers:
-#   + AutoDock Vina
+#   + AutoDock Vina/
+#     - autodock_vina_1_1_2_win32.msi
+#   + Openbabel/
+#     - anaconda.txt -> "https://anaconda.org/conda-forge/openbabel"
+#     - openbabel-3.1.1.1.tar.gz
+#     - OpenBabel-3.1.1-x64.exe
+#     - openbabel-openbabel-3-1-1.tar.gz
 installers/*
