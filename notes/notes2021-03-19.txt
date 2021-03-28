@@ -1,0 +1,45 @@
+[DOCUMENTATION]
+Unterschied "Water bridge" / "Hydrogen Bond" -> https://github.com/pharmai/plip/blob/master/DOCUMENTATION.md
+
+https://github.com/pharmai/plip/blob/master/DOCUMENTATION.md#hydrogen-bonds
+----
+Hydrogen Bonds
+
+A hydrogen bond between a hydrogen bond donor and acceptor is reported if several geometric requirements are fulfilled. 
+The distance has to be less than HBOND_DIST_MAX and the angle at the donor group (D-H...A) above HBOND_DON_ANGLE_MIN.
+
+Since salt bridges involve purely electrostatic interactions as well as hydrogen bonds, it is not meaningful to report 
+both interaction types between the same groups. Thus, hydrogen bonds between atoms are removed if they belong to groups 
+that already form a salt bridge to that atom.
+
+As a general rule, a hydrogen bond donor can take part in only one hydrogen bond, while acceptor atoms can be partners 
+in multiple hydrogen bonds (e.g. bifurcated hydrogen bonds). For multiple possible hydrogen bonds from one donor, only 
+the contact with the donor angle closer to 180 ° is kept.
+----
+
+https://github.com/pharmai/plip/blob/master/DOCUMENTATION.md#water-bridges
+----
+Water bridges
+
+While residues can be bridged by more than one water molecule, for the prediction in this script the only case considered 
+is one water molecule bridging ligand and protein atoms via hydrogen bonding.
+
+The water molecule has to be positioned between hydrogen bond donor/acceptor pairs of ligand and protein with distances of 
+the water oxygen within WATER_BRIDGE_MINDIST and WATER_BRIDGE_MAXDIST to the corresponding polar atoms of the donor or acceptor 
+groups. If a constellation with a water atom fulfils these requirements, two angles are checked. The angle ω between the acceptor 
+atom, the water oxygen and donor hydrogen has to be within WATER_BRIDGE_OMEGA_MIN and WATER_BRIDGE_OMEGA_MAX.Additionally, the 
+angle θ between the water oxygen, the donor hydrogen and the donor atom has to be larger than WATER_BRIDGE_THETA_MIN.
+
+Similar to standard hydrogen bonds, a water molecule is only allowed to participate as donor in two hydrogen bonds (two hydrogen 
+atoms as donors). In the case of more than two possible hydrogen bonds for a water molecule as donor, only the two contacts with 
+a water angle closest to 110° are kept
+----
+
+[SEH]
+Strukturen mit HOH / Metal_Complexion -> 5MWA
+file:///C:/Users/Micha/protein_docking/data/soluble_epoxide_hydrolase/results_3.25/result_hoh.json
+https://www.rcsb.org/structure/5MWA
+
+[PIPELINE]
+Testen mit 3KOO.pdb
+Entfernen von Ligand

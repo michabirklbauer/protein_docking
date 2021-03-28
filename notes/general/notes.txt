@@ -41,3 +41,6 @@ Different Scoring Functions:
 
 GUI:
 Streamlit - https://www.streamlit.io/
+
+RDKit:
+http://rdkit.org/docs/index.html
