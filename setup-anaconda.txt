@@ -1,10 +1,8 @@
 conda install -c conda-forge openbabel
+conda install -c conda-forge rdkit
+conda install -c conda-forge biopandas
 conda install pip
 pip install numpy
 pip install lxml
-pip install biopython
 conda install plip --no-deps
-conda install -c conda-forge rdkit
-conda install -c conda-forge biopandas 
-conda install -c conda-forge openmm
-pip install pdb-tools
+ 
