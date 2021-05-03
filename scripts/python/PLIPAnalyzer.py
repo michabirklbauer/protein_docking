@@ -462,3 +462,5 @@ class PLIPAnalyzer:
         if filename is not None:
             fig.savefig(filename, bbox_inches = "tight", dpi = 150)
         plt.show()
+        
+        return fig
