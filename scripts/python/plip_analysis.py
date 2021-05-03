@@ -9,6 +9,7 @@ import os
 import pandas as pd
 from shutil import copyfile
 
+# adjust args accordingly - here as an example for SEH in corresponding dir
 if __name__ == '__main__':
 
     # copy most recent version of PLIPAnalyzer to directory
