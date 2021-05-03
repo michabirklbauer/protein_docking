@@ -1,0 +1,9 @@
+biopandas
+lxml
+matplotlib
+numpy
+pandas
+plip==2.1.8
+requests
+streamlit==0.81.0
+urllib3
