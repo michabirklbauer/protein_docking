@@ -157,6 +157,9 @@ def main():
             remove_ligands("streamlit_structures/pdb_file.pdb", "streamlit_structures/pdb_file_cleaned.pdb")
             # get ligands from SDF file
             ligands = get_ligands("streamlit_structures/sdf_file.sdf")
+
+############################## add_ligands_multi() #############################
+
             # add ligands to PDB structure - one ligand per file currently
             with st.spinner("Step 1/2: Adding ligands to structure..."):
                 structures = []
@@ -170,6 +173,8 @@ def main():
                     add_ligands("streamlit_structures/pdb_file_cleaned.pdb", output_file, current_ligands)
                     progress = (i + 1) / (len(ligands) / ligands_per_file)
                     progress_bar.progress(progress)
+
+############################## PLIPAnalyzer.__init__() #########################
 
             # PLIPAnalyzer-Step - see PLIPAnalyzer for reference
             INTERACTION_FREQ = {}
@@ -287,6 +292,8 @@ def main():
 
             # remove tmp directory
             shutil.rmtree("streamlit_structures")
+
+############################## PLIPAnalyzer.plot() #############################
 
             # plot result
             fig = plt.figure(figsize = (20, 5))
