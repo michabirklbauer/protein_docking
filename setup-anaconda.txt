@@ -4,5 +4,5 @@ conda install -c conda-forge biopandas
 conda install pip
 pip install numpy
 pip install lxml
-conda install plip --no-deps
+pip install plip --no-deps
  
