@@ -139,7 +139,7 @@ class Preparation:
             pdb.df["HETATM"].replace("UNL", ligand_IDs[i], inplace = True)
             pdb.to_pdb(output_file)
 
-            pdb = Chem.MolFromPDBFile(outpath)
+            pdb = Chem.MolFromPDBFile(output_file)
 
         if len(skipped_ligands) > 0:
             print("Number of skipped ligands: " + str(len(skipped_ligands)))
