@@ -1,0 +1,11 @@
+# Compose file for running Streamlit App
+# author: Micha Birklbauer
+
+version: '3'
+
+services:
+  streamlitapp:
+    build: .
+    image: streamlitapp
+    ports:
+      - "8501:8501"
