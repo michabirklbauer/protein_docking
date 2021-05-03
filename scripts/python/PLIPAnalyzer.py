@@ -110,7 +110,7 @@ class Preparation:
         """
 
         if ligand_IDs is None:
-            ligand_IDs = ["LG" + str(x) for x in range(start = 1, stop = len(ligands) + 1)]
+            ligand_IDs = ["LG" + str(x) for x in range(1, len(ligands) + 1)]
 
         if ligand_chain_IDs is None:
                 ligand_chain_ids = ["A" for x in ligands]
@@ -165,11 +165,14 @@ class Preparation:
         """
 
         output_files = []
-        for i in range(start = 0, stop = len(ligands), step = ligands_per_file):
+        for i in range(0, len(ligands), ligands_per_file):
             l_idx = i
             r_idx = i + ligands_per_file
             current_ligands = ligands[l_idx:r_idx]
-            output_file = output_path + "/" + input_file.split(".")[0]
+            if output_path not in ["", ".", "current"]:
+                output_file = output_path + "/" + input_file.split(".")[0]
+            else:
+                output_file = input_file.split(".")[0]
             output_file = output_file + str(int(i / ligands_per_file + 1)) + ".pdb"
             output_files.append(output_file)
             self.add_ligands(input_file, output_file, current_ligands, **kwargs)
@@ -462,5 +465,5 @@ class PLIPAnalyzer:
         if filename is not None:
             fig.savefig(filename, bbox_inches = "tight", dpi = 150)
         plt.show()
-        
+
         return fig
