@@ -1,9 +1,0 @@
-libopenbabel-dev
-libopenbabel6
-pymol
-python3-openbabel
-python3-pymol
-openbabel
-python-rdkit
-librdkit1
-rdkit-data
