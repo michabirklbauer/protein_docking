@@ -75,7 +75,6 @@ dependencies:
   - numpy-base=1.19.2
   - olefile=0.46
   - openbabel=3.1.1
-  - openmm=7.5.0
   - openssl=1.1.1j
   - packaging=20.9
   - pandas=1.2.3
@@ -87,6 +86,7 @@ dependencies:
   - pillow=8.1.2
   - pip=21.0.1
   - pixman=0.40.0
+  - plip==2.1.8
   - prometheus_client=0.9.0
   - prompt-toolkit=3.0.8
   - pycairo=1.20.0
@@ -136,8 +136,6 @@ dependencies:
     - jupyterlab-widgets==1.0.0
     - lxml==4.6.2
     - numpy==1.20.1
-    - pdb-tools==2.3.1
-    - plip==2.1.8 [ --no-deps ]
     - protobuf==3.15.8
     - pyarrow==4.0.0
     - pydeck==0.6.2
