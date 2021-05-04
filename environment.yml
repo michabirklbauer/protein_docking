@@ -137,7 +137,7 @@ dependencies:
     - lxml==4.6.2
     - numpy==1.20.1
     - pdb-tools==2.3.1
-    - plip==2.1.8
+    - plip==2.1.8 [ --no-deps ]
     - protobuf==3.15.8
     - pyarrow==4.0.0
     - pydeck==0.6.2
