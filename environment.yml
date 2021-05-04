@@ -54,7 +54,7 @@ dependencies:
   - lcms2=2.12
   - libffi=3.3
   - libglib=2.66.7
-  - libstdcxx-ng
+  - libstdcxx-ng=9.3.0
   - libiconv=1.16
   - libpng=1.6.37
   - libsodium=1.0.18
