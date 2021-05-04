@@ -1,4 +1,4 @@
-name: ProteinDocking
+name: base
 channels:
   - conda-forge
   - defaults
