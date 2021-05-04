@@ -212,9 +212,11 @@ class PLIPAnalyzer:
         for pdb_entry in list_of_pdb_entries:
 
             # load pdb file
-            if path != "current":
+            if path not in ["", ".", "current"]:
                 filename = path + "/" + pdb_entry
-            if pdb_entry.split(".")[-1] != "pdb":
+            else:
+                filename = pdb_entry
+            if filename.split(".")[-1] != "pdb":
                 filename = filename + ".pdb"
             mol = PDBComplex()
             if verbose:
