@@ -666,7 +666,8 @@ class PLIPDockingAnalyzer:
                 e_Metal_Complexes = e_Metal_Complexes + Metal_Complexes
 
             # add analyzed structure to results via pdb_entry name
-            pdb_entry_results[pdb_entry] = {"nr_of_interactions": len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(e_Hydrophobic_Contacts) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes),
+            nr_of_interactions = len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(e_Hydrophobic_Contacts) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes)
+            pdb_entry_results[pdb_entry] = {"nr_of_interactions": nr_of_interactions,
                                             "interactions": {"Salt_Bridges": e_Salt_Bridges,
                                                              "Hydrogen_Bonds": e_Hydrogen_Bonds,
                                                              "Pi_Stacking": e_Pi_Stacking,
