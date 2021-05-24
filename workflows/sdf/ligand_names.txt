@@ -1,0 +1,154 @@
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock3	15 <- (1)
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock4	13
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock6	14
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock10	14
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock2	15
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock9	15
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock1	15
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock8	12
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock7	12
+(6HGV) [A] G3Q602|ligand_6hgv|sdf|1|dock5	14
+-- 1 --
+EZ_12|Lisa_paper2_min|sdf|1|dock1		13
+EZ_12|Lisa_paper2_min|sdf|1|dock6		13
+EZ_12|Lisa_paper2_min|sdf|1|dock8		11
+EZ_12|Lisa_paper2_min|sdf|1|dock3		15
+EZ_12|Lisa_paper2_min|sdf|1|dock5		14
+EZ_12|Lisa_paper2_min|sdf|1|dock4		16
+EZ_12|Lisa_paper2_min|sdf|1|dock7		14
+EZ_12|Lisa_paper2_min|sdf|1|dock9		13
+EZ_12|Lisa_paper2_min|sdf|1|dock2		17 <- (19)
+EZ_12|Lisa_paper2_min|sdf|1|dock10		16
+-- 2 --
+EZ_14|Lisa_paper2_min|sdf|2|dock1		13
+EZ_14|Lisa_paper2_min|sdf|2|dock6		15
+EZ_14|Lisa_paper2_min|sdf|2|dock3		13
+EZ_14|Lisa_paper2_min|sdf|2|dock8		13
+EZ_14|Lisa_paper2_min|sdf|2|dock4		13
+EZ_14|Lisa_paper2_min|sdf|2|dock9		13
+EZ_14|Lisa_paper2_min|sdf|2|dock5		13
+EZ_14|Lisa_paper2_min|sdf|2|dock2		15
+EZ_14|Lisa_paper2_min|sdf|2|dock10		16 <- (29)
+EZ_14|Lisa_paper2_min|sdf|2|dock7		11
+-- 3 --
+EZ_15|Lisa_paper2_min|sdf|3|dock1		12
+EZ_15|Lisa_paper2_min|sdf|3|dock4		12
+EZ_15|Lisa_paper2_min|sdf|3|dock7		15
+EZ_15|Lisa_paper2_min|sdf|3|dock3		14
+EZ_15|Lisa_paper2_min|sdf|3|dock8		16
+EZ_15|Lisa_paper2_min|sdf|3|dock6		10
+EZ_15|Lisa_paper2_min|sdf|3|dock2		13
+EZ_15|Lisa_paper2_min|sdf|3|dock9		17 <- (38)
+EZ_15|Lisa_paper2_min|sdf|3|dock5		12
+EZ_15|Lisa_paper2_min|sdf|3|dock10		12
+-- 4 --
+EZ_17|Lisa_paper2_min|sdf|4|dock2		15 <- (41)
+EZ_17|Lisa_paper2_min|sdf|4|dock5		13
+EZ_17|Lisa_paper2_min|sdf|4|dock7		15
+EZ_17|Lisa_paper2_min|sdf|4|dock6		12
+EZ_17|Lisa_paper2_min|sdf|4|dock1		13
+EZ_17|Lisa_paper2_min|sdf|4|dock10		15
+EZ_17|Lisa_paper2_min|sdf|4|dock3		13
+EZ_17|Lisa_paper2_min|sdf|4|dock8		11
+EZ_17|Lisa_paper2_min|sdf|4|dock9		11
+EZ_17|Lisa_paper2_min|sdf|4|dock4		15
+-- 5 --
+EZ_175a|Lisa_paper2_min|sdf|5|dock1		13 <- (51)
+EZ_175a|Lisa_paper2_min|sdf|5|dock6		12
+EZ_175a|Lisa_paper2_min|sdf|5|dock10		10
+EZ_175a|Lisa_paper2_min|sdf|5|dock4		10
+EZ_175a|Lisa_paper2_min|sdf|5|dock2		10
+EZ_175a|Lisa_paper2_min|sdf|5|dock8		12
+EZ_175a|Lisa_paper2_min|sdf|5|dock7		10
+EZ_175a|Lisa_paper2_min|sdf|5|dock9		12
+EZ_175a|Lisa_paper2_min|sdf|5|dock3		11
+EZ_175a|Lisa_paper2_min|sdf|5|dock5		12
+-- 6 --
+EZ_18b|Lisa_paper2_min|sdf|6|dock4		12
+EZ_18b|Lisa_paper2_min|sdf|6|dock1		13
+EZ_18b|Lisa_paper2_min|sdf|6|dock9		11
+EZ_18b|Lisa_paper2_min|sdf|6|dock6		13
+EZ_18b|Lisa_paper2_min|sdf|6|dock3		15
+EZ_18b|Lisa_paper2_min|sdf|6|dock10		14
+EZ_18b|Lisa_paper2_min|sdf|6|dock2		12
+EZ_18b|Lisa_paper2_min|sdf|6|dock7		18 <- (68)
+EZ_18b|Lisa_paper2_min|sdf|6|dock5		11
+EZ_18b|Lisa_paper2_min|sdf|6|dock8		15
+-- 7 --
+EZ_19|Lisa_paper2_min|sdf|7|dock7		15
+EZ_19|Lisa_paper2_min|sdf|7|dock3		11
+EZ_19|Lisa_paper2_min|sdf|7|dock2		13
+EZ_19|Lisa_paper2_min|sdf|7|dock5		12
+EZ_19|Lisa_paper2_min|sdf|7|dock10		14
+EZ_19|Lisa_paper2_min|sdf|7|dock9		14
+EZ_19|Lisa_paper2_min|sdf|7|dock1		17 <- (77)
+EZ_19|Lisa_paper2_min|sdf|7|dock8		12
+EZ_19|Lisa_paper2_min|sdf|7|dock6		12
+EZ_19|Lisa_paper2_min|sdf|7|dock4		17
+-- 8 --
+EZ_20|Lisa_paper2_min|sdf|8|dock7		13
+EZ_20|Lisa_paper2_min|sdf|8|dock5		14
+EZ_20|Lisa_paper2_min|sdf|8|dock3		10
+EZ_20|Lisa_paper2_min|sdf|8|dock10		13
+EZ_20|Lisa_paper2_min|sdf|8|dock9		15 <- (85)
+EZ_20|Lisa_paper2_min|sdf|8|dock8		11
+EZ_20|Lisa_paper2_min|sdf|8|dock1		15
+EZ_20|Lisa_paper2_min|sdf|8|dock6		11
+EZ_20|Lisa_paper2_min|sdf|8|dock4		14
+EZ_20|Lisa_paper2_min|sdf|8|dock2		15
+-- 9 --
+EZ_21|Lisa_paper2_min|sdf|9|dock6		14
+EZ_21|Lisa_paper2_min|sdf|9|dock9		12
+EZ_21|Lisa_paper2_min|sdf|9|dock5		12
+EZ_21|Lisa_paper2_min|sdf|9|dock10		12
+EZ_21|Lisa_paper2_min|sdf|9|dock2		13
+EZ_21|Lisa_paper2_min|sdf|9|dock8		11
+EZ_21|Lisa_paper2_min|sdf|9|dock3		11
+EZ_21|Lisa_paper2_min|sdf|9|dock1		15
+EZ_21|Lisa_paper2_min|sdf|9|dock4		15
+EZ_21|Lisa_paper2_min|sdf|9|dock7		18 <- (100)
+-- 10 --
+Livi_174a|Lisa_paper2_min|sdf|10|dock2		15
+Livi_174a|Lisa_paper2_min|sdf|10|dock1		14
+Livi_174a|Lisa_paper2_min|sdf|10|dock4		13
+Livi_174a|Lisa_paper2_min|sdf|10|dock6		14
+Livi_174a|Lisa_paper2_min|sdf|10|dock7		16
+Livi_174a|Lisa_paper2_min|sdf|10|dock5		14
+Livi_174a|Lisa_paper2_min|sdf|10|dock8		19 <- (107)
+Livi_174a|Lisa_paper2_min|sdf|10|dock10		15
+Livi_174a|Lisa_paper2_min|sdf|10|dock9		14
+Livi_174a|Lisa_paper2_min|sdf|10|dock3		15
+-- 11 --
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock3	15
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock5	14
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock7	15
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock1	13
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock2	11
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock6	13
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock10	13
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock4	13
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock8	12
+Molecule1_Diflapolin|Lisa_paper2_min|sdf|11|dock9	16 <- (120)
+-- 12 --
+MSC-065|Lisa_paper2_min|sdf|12|dock2		15
+MSC-065|Lisa_paper2_min|sdf|12|dock5		15
+MSC-065|Lisa_paper2_min|sdf|12|dock6		17
+MSC-065|Lisa_paper2_min|sdf|12|dock4		15
+MSC-065|Lisa_paper2_min|sdf|12|dock3		17
+MSC-065|Lisa_paper2_min|sdf|12|dock8		13
+MSC-065|Lisa_paper2_min|sdf|12|dock7		17
+MSC-065|Lisa_paper2_min|sdf|12|dock10		18 <- (128)
+MSC-065|Lisa_paper2_min|sdf|12|dock1		17
+MSC-065|Lisa_paper2_min|sdf|12|dock9		17
+-- 13 --
+MSC-067|Lisa_paper2_min|sdf|13|dock2		17 <- (131)
+MSC-067|Lisa_paper2_min|sdf|13|dock7		16
+MSC-067|Lisa_paper2_min|sdf|13|dock1		15
+MSC-067|Lisa_paper2_min|sdf|13|dock3		15
+MSC-067|Lisa_paper2_min|sdf|13|dock4		15
+MSC-067|Lisa_paper2_min|sdf|13|dock5		16
+MSC-067|Lisa_paper2_min|sdf|13|dock10		15
+MSC-067|Lisa_paper2_min|sdf|13|dock8		15
+MSC-067|Lisa_paper2_min|sdf|13|dock9		14
+MSC-067|Lisa_paper2_min|sdf|13|dock6		13
+-- 14 --

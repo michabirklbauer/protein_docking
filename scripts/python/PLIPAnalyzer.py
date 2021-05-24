@@ -60,7 +60,7 @@ class Preparation:
         for mol in mols:
             mol_cleaned = mol.strip()
             if mol_cleaned != "":
-                names.append(mol_cleaned.split("\n")[0])
+                names.append(mol_cleaned.split("\n")[0].strip())
 
         return names
 
@@ -533,7 +533,7 @@ class PLIPAnalyzer:
         ax.bar(self.i_frequencies.keys(), self.i_frequencies.values())
         xlocs, xlabs = plt.xticks()
         for i, v in enumerate(self.i_frequencies.values()):
-            plt.text(xlocs[i], v + label_offset, str(v), horizontalalignment = "center")
+            plt.text(xlocs[i], v + label_offset, str(round(v, 4)), horizontalalignment = "center")
         plt.title(title)
         plt.xlabel("Interaction")
         plt.ylabel("Absolute Frequency")
@@ -580,7 +580,7 @@ class PLIPDockingAnalyzer:
         # get nr of unique ligands
         unique_ligand_names = []
         for ligand_name in ligand_names:
-            unique_ligand_names.append("|".join(ligand_name.split("|")[:-1])
+            unique_ligand_names.append("|".join(ligand_name.split("|")[:-1]))
 
         # initialize nr of structures
         self.nr_structures = len(set(unique_ligand_names))
@@ -595,7 +595,7 @@ class PLIPDockingAnalyzer:
         # dictionary for all analyzed structures
         pdb_entry_results = {}
 
-        for pdb_entry in list_of_pdb_entries:
+        for i, pdb_entry in enumerate(list_of_pdb_entries):
 
             # interactions for this entry
             e_Salt_Bridges = []
@@ -667,7 +667,8 @@ class PLIPDockingAnalyzer:
 
             # add analyzed structure to results via pdb_entry name
             nr_of_interactions = len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(e_Hydrophobic_Contacts) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes)
-            pdb_entry_results[pdb_entry] = {"nr_of_interactions": nr_of_interactions,
+            pdb_entry_results[pdb_entry] = {"ligand_name": ligand_names[i],
+                                            "nr_of_interactions": nr_of_interactions,
                                             "interactions": {"Salt_Bridges": e_Salt_Bridges,
                                                              "Hydrogen_Bonds": e_Hydrogen_Bonds,
                                                              "Pi_Stacking": e_Pi_Stacking,
@@ -679,7 +680,16 @@ class PLIPDockingAnalyzer:
                                            }
 
         # get best pose for each unique ligand -- based on GOLD sdf naming schema!
-        # IMPORTANT: Assumes that poses of one ligand are actually grouped together in sdf file!
+        pdb_entry_results_sorted = dict(sorted(pdb_entry_results.items(), key = lambda x: x[1]["nr_of_interactions"], reverse = True))
+        best_pdb_entries_dict = {}
+        for key in pdb_entry_results_sorted.keys():
+            best_pdb_entries_dict_key = "|".join(pdb_entry_results_sorted[key]["ligand_name"].split("|")[:-1])
+            if best_pdb_entries_dict_key not in best_pdb_entries_dict:
+                best_pdb_entries_dict[best_pdb_entries_dict_key] = key
+        best_pdb_entries = list(best_pdb_entries_dict.values())
+
+        other_method = \
+        """
         best_pdb_entries = []
         current_name = "|".join(ligand_names[0].split("|")[:-1])
         current_best = list_of_pdb_entries[0]
@@ -697,6 +707,7 @@ class PLIPDockingAnalyzer:
                     current_best = pdb_entry
                 else:
                     pass
+        """
 
         # this corresponds to PLIPAnalyzer but only for best structures
         for pdb_entry in best_pdb_entries:
@@ -919,7 +930,7 @@ class PLIPDockingAnalyzer:
         ax.bar(self.i_frequencies.keys(), self.i_frequencies.values())
         xlocs, xlabs = plt.xticks()
         for i, v in enumerate(self.i_frequencies.values()):
-            plt.text(xlocs[i], v + label_offset, str(v), horizontalalignment = "center")
+            plt.text(xlocs[i], v + label_offset, str(round(v, 4)), horizontalalignment = "center")
         plt.title(title)
         plt.xlabel("Interaction")
         plt.ylabel("Absolute Frequency")
