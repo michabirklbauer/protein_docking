@@ -40,6 +40,54 @@ class Preparation:
     def __init__(self):
         pass
 
+    # get molecule names from sdf file
+    def get_sdf_names(self,
+                      sdf_file):
+
+        with open(sdf_file, "r") as f:
+            content = f.read()
+            f.close()
+
+        names = []
+        mols = content.split("$$$$")
+        for mol in mols:
+            mol_cleaned = mol.strip()
+            if mol_cleaned != "":
+                names.append(mol_cleaned.split("\n")[0])
+
+        return names
+
+    # get GOLD fitness from sdf file
+    def get_sdf_fitness(self,
+                        sdf_file):
+
+        with open(sdf_file, "r") as f:
+            content = f.read()
+            f.close()
+
+        scores = []
+        mols = content.split("$$$$")
+        for mol in mols:
+            mol_cleaned = mol.strip()
+            if mol_cleaned != "":
+                tmp = mol_cleaned.split("> <Gold.Goldscore.Fitness>")[1]
+                score = float(tmp.split(">")[0])
+                scores.append(score)
+
+        return scores
+
+    # get names and GOLD fitness from sdf file
+    def get_sdf_metainfo(self,
+                         sdf_file):
+
+        names = self.get_sdf_names(sdf_file)
+        scores = self.get_sdf_fitness(sdf_file)
+
+        if len(names) == len(scores):
+            return {"names": names, "fitness": scores}
+        else:
+            return 1
+
     # remove ligands from a pdb file
     def remove_ligands(self,
                        input_file,
@@ -179,6 +227,10 @@ class Preparation:
 
         return output_files
 
+    # get only best poses from sdf ligands - to be implemented
+    def get_best_poses(self,
+                       param):
+        pass
 
 class Comparison:
     """to be implemented"""
@@ -189,6 +241,8 @@ class PLIPAnalyzer:
     -- DESCRIPTION --
     """
 
+    nr_structures = None
+    normalized = None
     i_frequencies = None
     i_structures = None
     result = None
@@ -199,6 +253,7 @@ class PLIPAnalyzer:
                  path = "current",
                  chain = "A",
                  exclude = ["LIG", "HOH"],
+                 normalize = True,
                  verbose = 1):
 
         """
@@ -208,6 +263,15 @@ class PLIPAnalyzer:
         INTERACTION_FREQ = {}
         INTERACTION_STRUC = {}
         RESULT = {}
+
+        self.nr_structures = len(list_of_pdb_entries)
+        self.normalized = normalize
+
+        # constant for absolute / normalized frequencies
+        if normalize:
+            c = 1 / self.nr_structures
+        else:
+            c = 1
 
         for pdb_entry in list_of_pdb_entries:
 
@@ -265,130 +329,130 @@ class PLIPAnalyzer:
                 for sb_residue in Salt_Bridges:
                     k = "Salt_Bridge:" + sb_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for hb_residue in Hydrogen_Bonds:
                     k = "Hydrogen_Bond:" + hb_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for ps_residue in Pi_Stacking:
                     k = "Pi-Stacking:" + ps_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for pc_residue in Pi_Cation_Interactions:
                     k = "Pi-Cation_Interaction:" + pc_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for hc_residue in Hydrophobic_Contacts:
                     k = "Hydrophobic_Interaction:" + hc_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for halogenb_residue in Halogen_Bonds:
                     k = "Halogen_Bond:" + halogenb_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for wb_residue in Water_Bridges:
                     k = "Water_Bridge:" + wb_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
                 for mc_residue in Metal_Complexes:
                     k = "Metal_Complexation:" + mc_residue
                     if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + 1
+                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
                     else:
-                        INTERACTION_FREQ[k] = 1
+                        INTERACTION_FREQ[k] = c
                     if k in INTERACTION_STRUC:
                         INTERACTION_STRUC[k].append(pdb_entry)
                     else:
                         INTERACTION_STRUC[k] = [pdb_entry]
                     if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + 1
+                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
                         RESULT[k]["structures"].append(pdb_entry)
                     else:
-                        RESULT[k] = {"frequency": 1, "structures": [pdb_entry]}
+                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
 
         # print warnings if no interactions are found or results do not agree
         if not INTERACTION_FREQ or not INTERACTION_STRUC or not RESULT:
@@ -448,11 +512,18 @@ class PLIPAnalyzer:
              filename = None,
              width = 20,
              height = 5,
-             label_offset = 1):
+             label_offset = None):
 
         """
         -- DESCRIPTION --
         """
+
+        # set label offset if not specified
+        if label_offset is None:
+            if self.normalized:
+                label_offset = 1 / self.nr_structures
+            else:
+                label_offset = 1
 
         fig = plt.figure(figsize = (width, height))
         ax = fig.add_axes([0,0,1,1])
