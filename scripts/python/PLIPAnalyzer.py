@@ -560,7 +560,7 @@ class PLIPAnalyzer:
         self.best_pdb_entries = best_pdb_entries
 
     # save results as json with a given prefix
-    def save(self, prefix):
+    def save(self, prefix, save_pdb_entry_results = False):
 
         """
         -- DESCRIPTION --
@@ -581,7 +581,14 @@ class PLIPAnalyzer:
             json.dump(self.i_structures, f)
             f.close()
 
-        return [filename_1, filename_2, filename_3]
+        if save_pdb_entry_results:
+            filename_4 = prefix + "_pdb_entry_results.json"
+            with open(filename_4, "w") as f:
+                json.dump(self.pdb_entry_results, f)
+                f.close()
+            return [filename_1, filename_2, filename_3, filename_4]
+        else:
+            return [filename_1, filename_2, filename_3]
 
     # save frequencies as csv
     def to_csv(self, filename):
