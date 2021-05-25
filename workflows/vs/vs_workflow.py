@@ -26,9 +26,9 @@ if __name__ == '__main__':
     from PLIPAnalyzer import Preparation as prep
     from PLIPAnalyzer import Comparison as paComp
 
-    enabled_1 = False
-    enabled_2 = False
-    enabled_3 = False
+    enabled_1 = True
+    enabled_2 = True
+    enabled_3 = True
     enabled_4 = True
 
     if enabled_1:
