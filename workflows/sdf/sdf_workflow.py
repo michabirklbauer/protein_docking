@@ -23,7 +23,6 @@ if __name__ == '__main__':
 
     # import PLIPAnalyzer
     from PLIPAnalyzer import PLIPAnalyzer as pa
-    from PLIPAnalyzer import PLIPDockingAnalyzer as paDock
     from PLIPAnalyzer import Preparation as prep
 
     enabled_1 = True
@@ -65,7 +64,7 @@ if __name__ == '__main__':
 
     if enabled_3:
         # PLIPAnalyzer - best poses only
-        result = paDock(structures, ligand_names, path = "current", normalize = False)
+        result = pa(structures, ligand_names = ligand_names, poses = "best", path = "current", normalize = False)
         r = result.save("results/results_best_vs_6hgv_6A_Gold")
         print("Result saved in:")
         print(r)
@@ -82,7 +81,7 @@ if __name__ == '__main__':
 
     if enabled_4:
         # PLIPAnalyzer - best poses only, normalized
-        result = paDock(structures, ligand_names, path = "current")
+        result = pa(structures, ligand_names = ligand_names, poses = "best", path = "current")
         r = result.save("results/results_best_normalized_vs_6hgv_6A_Gold")
         print("Result saved in:")
         print(r)

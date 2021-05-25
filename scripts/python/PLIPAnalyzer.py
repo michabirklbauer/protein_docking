@@ -51,6 +51,10 @@ class Preparation:
     def get_sdf_names(self,
                       sdf_file):
 
+        """
+        -- DESCRIPTION --
+        """
+
         with open(sdf_file, "r") as f:
             content = f.read()
             f.close()
@@ -67,6 +71,10 @@ class Preparation:
     # get GOLD fitness from sdf file
     def get_sdf_fitness(self,
                         sdf_file):
+
+        """
+        -- DESCRIPTION --
+        """
 
         with open(sdf_file, "r") as f:
             content = f.read()
@@ -86,6 +94,10 @@ class Preparation:
     # get names and GOLD fitness from sdf file
     def get_sdf_metainfo(self,
                          sdf_file):
+
+        """
+        -- DESCRIPTION --
+        """
 
         names = self.get_sdf_names(sdf_file)
         scores = self.get_sdf_fitness(sdf_file)
@@ -249,312 +261,6 @@ class PLIPAnalyzer:
     i_structures = None
     result = None
 
-    # constructor with plip analysis
-    def __init__(self,
-                 list_of_pdb_entries,
-                 path = "current",
-                 chain = "A",
-                 exclude = ["LIG", "HOH"],
-                 normalize = True,
-                 verbose = 1):
-
-        """
-        -- DESCRIPTION --
-        """
-
-        INTERACTION_FREQ = {}
-        INTERACTION_STRUC = {}
-        RESULT = {}
-
-        self.nr_structures = len(list_of_pdb_entries)
-        self.normalized = normalize
-
-        # constant for absolute / normalized frequencies
-        if normalize:
-            c = 1 / self.nr_structures
-        else:
-            c = 1
-
-        for pdb_entry in list_of_pdb_entries:
-
-            # load pdb file
-            if path not in ["", ".", "current"]:
-                filename = path + "/" + pdb_entry
-            else:
-                filename = pdb_entry
-            if filename.split(".")[-1] != "pdb":
-                filename = filename + ".pdb"
-            mol = PDBComplex()
-            if verbose:
-                print("Analyzing file: ", filename)
-            mol.load_pdb(filename)
-
-            # get interactions
-            # --> according to plipcmd.process_pdb()
-            for ligand in mol.ligands:
-                mol.characterize_complex(ligand)
-
-            # iterate over interaction sets
-            for key in mol.interaction_sets:
-                iHet_ID, iChain, iPosition = key.split(":")
-                # discard suspicious ligands
-                # e.g. see -> https://github.com/pharmai/plip/blob/master/plip/basic/config.py
-                if iHet_ID.strip().upper() in biolip_list:
-                    continue
-                # discard uninteressted chains
-                if iChain != chain:
-                    continue
-                interaction = mol.interaction_sets[key]
-
-                # get interaction residues
-                # SALT BRIDGES
-                tmp_salt_bridges = interaction.saltbridge_lneg + interaction.saltbridge_pneg
-                Salt_Bridges = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in tmp_salt_bridges if i.restype not in exclude]
-                # HYDROGEN BONDS
-                tmp_h_bonds = interaction.hbonds_pdon + interaction.hbonds_ldon
-                Hydrogen_Bonds = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in tmp_h_bonds if i.restype not in exclude]
-                # PI STACKING
-                Pi_Stacking = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in interaction.pistacking if i.restype not in exclude]
-                # PI CATION INTERACTION
-                tmp_pication = interaction.pication_laro + interaction.pication_paro
-                Pi_Cation_Interactions = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in tmp_pication if i.restype not in exclude]
-                # HYDROPHOBIC CONTACTS
-                Hydrophobic_Contacts = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in interaction.hydrophobic_contacts if i.restype not in exclude]
-                # HALOGEN BONDS
-                Halogen_Bonds = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in interaction.halogen_bonds if i.restype not in exclude]
-                # WATER BRIDGES
-                Water_Bridges = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in interaction.water_bridges if i.restype not in exclude]
-                # METAL COMPLEXES
-                Metal_Complexes = [''.join([str(i.restype), str(i.resnr), str(i.reschain)]) for i in interaction.metal_complexes if i.restype not in exclude]
-
-                # build dictonary
-                for sb_residue in Salt_Bridges:
-                    k = "Salt_Bridge:" + sb_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for hb_residue in Hydrogen_Bonds:
-                    k = "Hydrogen_Bond:" + hb_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for ps_residue in Pi_Stacking:
-                    k = "Pi-Stacking:" + ps_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for pc_residue in Pi_Cation_Interactions:
-                    k = "Pi-Cation_Interaction:" + pc_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for hc_residue in Hydrophobic_Contacts:
-                    k = "Hydrophobic_Interaction:" + hc_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for halogenb_residue in Halogen_Bonds:
-                    k = "Halogen_Bond:" + halogenb_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for wb_residue in Water_Bridges:
-                    k = "Water_Bridge:" + wb_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-                for mc_residue in Metal_Complexes:
-                    k = "Metal_Complexation:" + mc_residue
-                    if k in INTERACTION_FREQ:
-                        INTERACTION_FREQ[k] = INTERACTION_FREQ[k] + c
-                    else:
-                        INTERACTION_FREQ[k] = c
-                    if k in INTERACTION_STRUC:
-                        INTERACTION_STRUC[k].append(pdb_entry)
-                    else:
-                        INTERACTION_STRUC[k] = [pdb_entry]
-                    if k in RESULT:
-                        RESULT[k]["frequency"] = RESULT[k]["frequency"] + c
-                        RESULT[k]["structures"].append(pdb_entry)
-                    else:
-                        RESULT[k] = {"frequency": c, "structures": [pdb_entry]}
-
-        # print warnings if no interactions are found or results do not agree
-        if not INTERACTION_FREQ or not INTERACTION_STRUC or not RESULT:
-            if not INTERACTION_FREQ and not INTERACTION_STRUC and not RESULT:
-                warnings.warn("There are no found interactions!", NoInteractionsWarning)
-            else:
-                warnings.warn("It seems like there was an error during calculation! Results may not be correct or complete.", CalculationErrorWarning)
-
-        self.i_frequencies = dict(sorted(INTERACTION_FREQ.items(), key = lambda x: x[1], reverse = True))
-        self.i_structures = dict(sorted(INTERACTION_STRUC.items(), key = lambda x: len(x[1]), reverse = True))
-        self.result = dict(sorted(RESULT.items(), key = lambda x: x[1]["frequency"], reverse = True))
-
-    # save results as json with a given prefix
-    def save(self, prefix):
-
-        """
-        -- DESCRIPTION --
-        """
-
-        filename_1 = prefix + "_result.json"
-        with open(filename_1, "w") as f:
-            json.dump(self.result, f)
-            f.close()
-
-        filename_2 = prefix + "_frequencies.json"
-        with open(filename_2, "w") as f:
-            json.dump(self.i_frequencies, f)
-            f.close()
-
-        filename_3 = prefix + "_structures.json"
-        with open(filename_3, "w") as f:
-            json.dump(self.i_structures, f)
-            f.close()
-
-        return [filename_1, filename_2, filename_3]
-
-    # save frequencies as csv
-    def to_csv(self, filename):
-
-        """
-        -- DESCRIPTION --
-        """
-
-        frequencies_csv = "Interaction;Frequency\n"
-        for key in self.i_frequencies:
-            frequencies_csv = frequencies_csv+ str(key) + ";" + str(self.i_frequencies[key]) + "\n"
-
-            with open(filename, "w") as f:
-                f.write(frequencies_csv)
-                f.close()
-
-        return frequencies_csv
-
-    # plot frequencies with matplotlib
-    def plot(self,
-             title,
-             filename = None,
-             width = 20,
-             height = 5,
-             label_offset = None):
-
-        """
-        -- DESCRIPTION --
-        """
-
-        # set label offset if not specified
-        if label_offset is None:
-            if self.normalized:
-                label_offset = 1 / self.nr_structures
-            else:
-                label_offset = 1
-
-        fig = plt.figure(figsize = (width, height))
-        ax = fig.add_axes([0,0,1,1])
-        plt.xticks(rotation = "vertical")
-        ax.bar(self.i_frequencies.keys(), self.i_frequencies.values())
-        xlocs, xlabs = plt.xticks()
-        for i, v in enumerate(self.i_frequencies.values()):
-            plt.text(xlocs[i], v + label_offset, str(round(v, 4)), horizontalalignment = "center")
-        plt.title(title)
-        plt.xlabel("Interaction")
-        plt.ylabel("Absolute Frequency")
-        if filename is not None:
-            fig.savefig(filename, bbox_inches = "tight", dpi = 150)
-        plt.show()
-
-        return fig
-
-class PLIPDockingAnalyzer:
-    """
-    -- DESCRIPTION --
-    note - only pose with most interactions is used
-    """
-
-    nr_structures = None
-    normalized = None
-    i_frequencies = None
-    i_structures = None
-    result = None
-
     # additional attributes
     pdb_entry_results = None
     best_pdb_entries = None
@@ -562,7 +268,8 @@ class PLIPDockingAnalyzer:
     # constructor with plip analysis for docking sdf files with multiple poses
     def __init__(self,
                  list_of_pdb_entries,
-                 ligand_names,
+                 ligand_names = None,
+                 poses = "all",
                  path = "current",
                  chain = "A",
                  exclude = ["LIG", "HOH"],
@@ -576,6 +283,10 @@ class PLIPDockingAnalyzer:
         INTERACTION_FREQ = {}
         INTERACTION_STRUC = {}
         RESULT = {}
+
+        # if ligand names not given, generate unique ones for every structure
+        if ligand_names is None:
+            ligand_names = ["LIG" + str(i) + "|ligand|sdf|1|dock1" for i in range(1, len(list_of_pdb_entries) + 1)]
 
         # get nr of unique ligands
         unique_ligand_names = []
@@ -688,29 +399,13 @@ class PLIPDockingAnalyzer:
                 best_pdb_entries_dict[best_pdb_entries_dict_key] = key
         best_pdb_entries = list(best_pdb_entries_dict.values())
 
-        other_method = \
-        """
-        best_pdb_entries = []
-        current_name = "|".join(ligand_names[0].split("|")[:-1])
-        current_best = list_of_pdb_entries[0]
-        current_best_nri = pdb_entry_results[current_best]["nr_of_interactions"]
-        for i, pdb_entry in enumerate(list_of_pdb_entries):
-            new_name = "|".join(ligand_names[i].split("|")[:-1])
-            if new_name != current_name:
-                current_name = new_name
-                best_pdb_entries.append(current_best)
-                current_best = list_of_pdb_entries[i]
-                current_best_nri = pdb_entry_results[current_best]["nr_of_interactions"]
-            else:
-                new_nri = pdb_entry_results[pdb_entry]["nr_of_interactions"]
-                if new_nri > current_best_nri:
-                    current_best = pdb_entry
-                else:
-                    pass
-        """
+        # select structures for best / all poses
+        if poses == "best":
+            entries_to_be_used = best_pdb_entries
+        else:
+            entries_to_be_used = list_of_pdb_entries
 
-        # this corresponds to PLIPAnalyzer but only for best structures
-        for pdb_entry in best_pdb_entries:
+        for pdb_entry in entries_to_be_used:
 
             # get interactions from dictonary
             Salt_Bridges = pdb_entry_results[pdb_entry]["interactions"]["Salt_Bridges"]
@@ -933,7 +628,10 @@ class PLIPDockingAnalyzer:
             plt.text(xlocs[i], v + label_offset, str(round(v, 4)), horizontalalignment = "center")
         plt.title(title)
         plt.xlabel("Interaction")
-        plt.ylabel("Absolute Frequency")
+        if self.normalized:
+            plt.ylabel("Relative Frequency")
+        else:
+            plt.ylabel("Absolute Frequency")
         if filename is not None:
             fig.savefig(filename, bbox_inches = "tight", dpi = 150)
         plt.show()
