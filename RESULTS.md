@@ -32,3 +32,17 @@
 **Best, Normalized**
 
 ![16](workflows/sdf/results/results_best_normalized_vs_6hgv_6A_Gold.png)
+
+## Docking Comparison SEH
+
+**Actives**
+
+![17](workflows/vs/results/sEH_6hgv_results_actives.png)
+
+**Inactives**
+
+![18](workflows/vs/results/sEH_6hgv_results_inactives.png)
+
+**Comparison**
+
+![19](workflows/vs/results/sEH_6hgv_results_comparison.png)

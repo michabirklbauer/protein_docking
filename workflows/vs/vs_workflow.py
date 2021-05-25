@@ -24,53 +24,71 @@ if __name__ == '__main__':
     # import PLIPAnalyzer
     from PLIPAnalyzer import PLIPAnalyzer as pa
     from PLIPAnalyzer import Preparation as prep
+    from PLIPAnalyzer import Comparison as paComp
 
-    # analysis
-    p = prep()
-    # clean PDB file
-    pdb = p.remove_ligands("6hgv.pdb", "6hgv_cleaned.pdb")
-    # read ligands from docking SDF file
-    ligands = p.get_ligands("sEH_6hgv_results.sdf")
-    # get ligand names
-    sdf_metainfo = p.get_sdf_metainfo("sEH_6hgv_results.sdf")
-    ligand_names = sdf_metainfo["names"]
-    # write ligands into PDB files
-    structures = p.add_ligands_multi("6hgv_cleaned.pdb", "structures", ligands)
-    # get subsets
-    actives_idx, inactives_idx = p.actives_inactives_split("sEH_6hgv_results.sdf")
-    actives_structures = [structures[i] for i in actives_idx]
-    actives_names = [ligand_names[i] for i in actives_idx]
-    inactives_structures = [structures[i] for i in inactives_idx]
-    inactives_names = [ligand_names[i] for i in inactives_idx]
+    enabled_1 = False
+    enabled_2 = False
+    enabled_3 = False
+    enabled_4 = True
 
-    # save subsets
-    with open("subsets.json", "w") as f:
-        json.dump({"actives_idx": actives_idx,
-                   "actives_structures": actives_structures,
-                   "actives_names": actives_names,
-                   "inactives_idx": inactives_idx,
-                   "inactives_structures": inactives_structures,
-                   "inactives_names": inactives_names}, f)
-        f.close()
+    if enabled_1:
+        # analysis
+        p = prep()
+        # clean PDB file
+        pdb = p.remove_ligands("6hgv.pdb", "6hgv_cleaned.pdb")
+        # read ligands from docking SDF file
+        ligands = p.get_ligands("sEH_6hgv_results.sdf")
+        # get ligand names
+        sdf_metainfo = p.get_sdf_metainfo("sEH_6hgv_results.sdf")
+        ligand_names = sdf_metainfo["names"]
+        # write ligands into PDB files
+        structures = p.add_ligands_multi("6hgv_cleaned.pdb", "structures", ligands)
+        # get subsets
+        actives_idx, inactives_idx = p.actives_inactives_split("sEH_6hgv_results.sdf")
+        actives_structures = [structures[i] for i in actives_idx]
+        actives_names = [ligand_names[i] for i in actives_idx]
+        inactives_structures = [structures[i] for i in inactives_idx]
+        inactives_names = [ligand_names[i] for i in inactives_idx]
 
-    # PLIPAnalyzer - actives
-    result = pa(actives_structures, ligand_names = actives_names, poses = "best", path = "current")
-    r = result.save("results/sEH_6hgv_results_actives")
-    print("Result saved in:")
-    print(r)
-    r = result.to_csv("results/sEH_6hgv_results_actives_freq.csv")
-    result.plot("sEH_6hgv_results_actives", filename = "results/sEH_6hgv_results_actives.jpg")
-    result.plot("sEH_6hgv_results_actives", filename = "results/sEH_6hgv_results_actives.png")
+        # save subsets
+        with open("subsets.json", "w") as f:
+            json.dump({"actives_idx": actives_idx,
+                       "actives_structures": actives_structures,
+                       "actives_names": actives_names,
+                       "inactives_idx": inactives_idx,
+                       "inactives_structures": inactives_structures,
+                       "inactives_names": inactives_names}, f)
+            f.close()
+
+    if enabled_2:
+        # PLIPAnalyzer - actives
+        result = pa(actives_structures, ligand_names = actives_names, poses = "best", path = "current")
+        r = result.save("results/sEH_6hgv_results_actives")
+        print("Result saved in:")
+        print(r)
+        r = result.to_csv("results/sEH_6hgv_results_actives_freq.csv")
+        result.plot("sEH_6hgv_results_actives", filename = "results/sEH_6hgv_results_actives.jpg")
+        result.plot("sEH_6hgv_results_actives", filename = "results/sEH_6hgv_results_actives.png")
 
 
-    # PLIPAnalyzer - inactives
-    result = pa(inactives_structures, ligand_names = inactives_names, poses = "best", path = "current")
-    r = result.save("results/sEH_6hgv_results_inactives")
-    print("Result saved in:")
-    print(r)
-    r = result.to_csv("results/sEH_6hgv_results_inactives_freq.csv")
-    result.plot("sEH_6hgv_results_inactives", filename = "results/sEH_6hgv_results_inactives.jpg")
-    result.plot("sEH_6hgv_results_inactives", filename = "results/sEH_6hgv_results_inactives.png")
+    if enabled_3:
+        # PLIPAnalyzer - inactives
+        result = pa(inactives_structures, ligand_names = inactives_names, poses = "best", path = "current")
+        r = result.save("results/sEH_6hgv_results_inactives")
+        print("Result saved in:")
+        print(r)
+        r = result.to_csv("results/sEH_6hgv_results_inactives_freq.csv")
+        result.plot("sEH_6hgv_results_inactives", filename = "results/sEH_6hgv_results_inactives.jpg")
+        result.plot("sEH_6hgv_results_inactives", filename = "results/sEH_6hgv_results_inactives.png")
+
+    if enabled_4:
+        # Compare actives vs inactives
+        comp = paComp("Actives", "Inactives",
+                      "results/sEH_6hgv_results_actives_frequencies.json",
+                      "results/sEH_6hgv_results_inactives_frequencies.json",
+                      True, True)
+        comp.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives", filename = "results/sEH_6hgv_results_comparison.jpg")
+        comp.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives", filename = "results/sEH_6hgv_results_comparison.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")

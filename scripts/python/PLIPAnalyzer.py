@@ -267,8 +267,109 @@ class Preparation:
         return output_files
 
 class Comparison:
-    """to be implemented"""
-    pass
+    """
+    -- DESCRIPTION --
+    """
+
+    name_a = None
+    name_b = None
+    frequencies_a = None
+    frequencies_b = None
+    comparison = None
+
+    def __init__(self,
+                 name_a,
+                 name_b,
+                 frequencies_a,
+                 frequencies_b,
+                 is_file_a = False,
+                 is_file_b = False):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        if is_file_a:
+            with open(frequencies_a, "r", encoding = "utf-8") as f:
+                frequencies_a = json.load(f)
+                f.close()
+
+        if is_file_b:
+            with open(frequencies_b, "r", encoding = "utf-8") as f:
+                frequencies_b = json.load(f)
+                f.close()
+
+        self.name_a = name_a
+        self.name_b = name_b
+        self.frequencies_a = frequencies_a
+        self.frequencies_b = frequencies_b
+
+        keys_a = set(frequencies_a.keys())
+        keys_b = set(frequencies_b.keys())
+        keys = keys_a.union(keys_b)
+
+        comparison = {}
+        for key in keys:
+            if key in frequencies_a and key in frequencies_b:
+                comparison[key] = {"difference": abs(frequencies_a[key] - frequencies_b[key]),
+                                   name_a: frequencies_a[key],
+                                   name_b: frequencies_b[key]}
+            elif key in frequencies_a and key not in frequencies_b:
+                comparison[key] = {"difference": abs(frequencies_a[key] - 0),
+                                   name_a: frequencies_a[key],
+                                   name_b: 0}
+            elif key in frequencies_b and key not in frequencies_a:
+                comparison[key] = {"difference": abs(0 - frequencies_b[key]),
+                                   name_a: 0,
+                                   name_b: frequencies_b[key]}
+            else:
+                warnings.warn("Oops! Key not in either dict! This should not happen!", UserWarning)
+
+        self.comparison = dict(sorted(comparison.items(), key = lambda x: x[1]["difference"], reverse = True))
+
+    def plot(self,
+             title = None,
+             filename = None,
+             width = 20,
+             height = 5,
+             sig_digits = 2,
+             label_offset = 0.05):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        if title is None:
+            title = "Comparison: " + self.name_a + " vs. " + self.name_b
+
+        values_a = []
+        values_b = []
+
+        for key in self.comparison:
+            values_a.append(self.comparison[key][self.name_a])
+            values_b.append(self.comparison[key][self.name_b])
+
+        fig = plt.figure(figsize = (width, height))
+        ax = fig.add_axes([0,0,1,1])
+        x = np.arange(len(values_a))
+        ax.bar(x - 0.2, values_a, 0.4)
+        ax.bar(x + 0.2, values_b, 0.4)
+        plt.xticks(x, list(self.comparison.keys()), rotation = "vertical")
+        xlocs, xlabs = plt.xticks()
+        for i, v in enumerate(values_a):
+            plt.text(xlocs[i] - 0.2, v + label_offset, str(round(v, sig_digits)), horizontalalignment = "center", rotation = 90)
+        for i, v in enumerate(values_b):
+            plt.text(xlocs[i] + 0.2, v + label_offset, str(round(v, sig_digits)), horizontalalignment = "center", rotation = 90)
+        plt.title(title)
+        plt.xlabel("Interaction")
+        plt.ylabel("Relative Frequency")
+        plt.legend([self.name_a, self.name_b])
+        if filename is not None:
+            fig.savefig(filename, bbox_inches = "tight", dpi = 150)
+        plt.show()
+
+        return fig
+
 
 class PLIPAnalyzer:
     """
@@ -633,6 +734,7 @@ class PLIPAnalyzer:
              filename = None,
              width = 20,
              height = 5,
+             sig_digits = 4,
              label_offset = None):
 
         """
@@ -652,7 +754,7 @@ class PLIPAnalyzer:
         ax.bar(self.i_frequencies.keys(), self.i_frequencies.values())
         xlocs, xlabs = plt.xticks()
         for i, v in enumerate(self.i_frequencies.values()):
-            plt.text(xlocs[i], v + label_offset, str(round(v, 4)), horizontalalignment = "center")
+            plt.text(xlocs[i], v + label_offset, str(round(v, sig_digits)), horizontalalignment = "center")
         plt.title(title)
         plt.xlabel("Interaction")
         if self.normalized:
