@@ -47,7 +47,7 @@ class Preparation:
     def __init__(self):
         pass
 
-    # get molecule names from sdf file
+    # get molecule names from sdf file -- safer to use get_sdf_metainfo() instead!
     def get_sdf_names(self,
                       sdf_file):
 
@@ -68,7 +68,7 @@ class Preparation:
 
         return names
 
-    # get GOLD fitness from sdf file
+    # get GOLD fitness from sdf file -- safer to use get_sdf_metainfo() instead!
     def get_sdf_fitness(self,
                         sdf_file):
 
@@ -106,6 +106,26 @@ class Preparation:
             return {"names": names, "fitness": scores}
         else:
             raise ParseError("SDF file could not be parsed [nr of names != nr of scores].")
+
+    # get indices of active and inactive molecules in sdf file
+    def actives_inactives_split(self,
+                                sdf_file):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        actives = []
+        inactives = []
+        names = self.get_sdf_metainfo(sdf_file)["names"]
+
+        for i, name in enumerate(names):
+            if "inactive" in name:
+                inactives.append(i)
+            else:
+                actives.append(i)
+
+        return [actives, inactives]
 
     # remove ligands from a pdb file
     def remove_ligands(self,
