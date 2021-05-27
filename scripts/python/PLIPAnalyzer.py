@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.2.5"
-date = "20210524"
+version = "0.3.0"
+date = "20210527"
 
 import json
 import warnings
@@ -394,6 +394,7 @@ class PLIPAnalyzer:
                  path = "current",
                  chain = "A",
                  exclude = ["LIG", "HOH"],
+                 discard_exceeding_hc = True,
                  normalize = True,
                  verbose = 1):
 
@@ -414,7 +415,7 @@ class PLIPAnalyzer:
         for ligand_name in ligand_names:
             unique_ligand_names.append("|".join(ligand_name.split("|")[:-1]))
 
-        # initialize nr of structures
+        # set attributes
         self.nr_structures = len(set(unique_ligand_names))
         self.normalized = normalize
 
@@ -498,18 +499,33 @@ class PLIPAnalyzer:
                 e_Metal_Complexes = e_Metal_Complexes + Metal_Complexes
 
             # add analyzed structure to results via pdb_entry name
-            nr_of_interactions = len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(e_Hydrophobic_Contacts) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes)
-            pdb_entry_results[pdb_entry] = {"ligand_name": ligand_names[i],
-                                            "nr_of_interactions": nr_of_interactions,
-                                            "interactions": {"Salt_Bridges": e_Salt_Bridges,
-                                                             "Hydrogen_Bonds": e_Hydrogen_Bonds,
-                                                             "Pi_Stacking": e_Pi_Stacking,
-                                                             "Pi_Cation_Interactions": e_Pi_Cation_Interactions,
-                                                             "Hydrophobic_Contacts": e_Hydrophobic_Contacts,
-                                                             "Halogen_Bonds": e_Halogen_Bonds,
-                                                             "Water_Bridges": e_Water_Bridges,
-                                                             "Metal_Complexes": e_Metal_Complexes}
-                                           }
+            # discard "copies" of hydrophobic contacts or not
+            if discard_exceeding_hc:
+                nr_of_interactions = len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(set(e_Hydrophobic_Contacts)) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes)
+                pdb_entry_results[pdb_entry] = {"ligand_name": ligand_names[i],
+                                                "nr_of_interactions": nr_of_interactions,
+                                                "interactions": {"Salt_Bridges": e_Salt_Bridges,
+                                                                 "Hydrogen_Bonds": e_Hydrogen_Bonds,
+                                                                 "Pi_Stacking": e_Pi_Stacking,
+                                                                 "Pi_Cation_Interactions": e_Pi_Cation_Interactions,
+                                                                 "Hydrophobic_Contacts": list(set(e_Hydrophobic_Contacts)),
+                                                                 "Halogen_Bonds": e_Halogen_Bonds,
+                                                                 "Water_Bridges": e_Water_Bridges,
+                                                                 "Metal_Complexes": e_Metal_Complexes}
+                                               }
+            else:
+                nr_of_interactions = len(e_Salt_Bridges) + len(e_Hydrogen_Bonds) + len(e_Pi_Stacking) + len(e_Pi_Cation_Interactions) + len(e_Hydrophobic_Contacts) + len(e_Halogen_Bonds) + len(e_Water_Bridges) + len(e_Metal_Complexes)
+                pdb_entry_results[pdb_entry] = {"ligand_name": ligand_names[i],
+                                                "nr_of_interactions": nr_of_interactions,
+                                                "interactions": {"Salt_Bridges": e_Salt_Bridges,
+                                                                 "Hydrogen_Bonds": e_Hydrogen_Bonds,
+                                                                 "Pi_Stacking": e_Pi_Stacking,
+                                                                 "Pi_Cation_Interactions": e_Pi_Cation_Interactions,
+                                                                 "Hydrophobic_Contacts": e_Hydrophobic_Contacts,
+                                                                 "Halogen_Bonds": e_Halogen_Bonds,
+                                                                 "Water_Bridges": e_Water_Bridges,
+                                                                 "Metal_Complexes": e_Metal_Complexes}
+                                               }
 
         # get best pose for each unique ligand -- based on GOLD sdf naming schema!
         pdb_entry_results_sorted = dict(sorted(pdb_entry_results.items(), key = lambda x: x[1]["nr_of_interactions"], reverse = True))
