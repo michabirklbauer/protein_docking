@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/soluble_epoxide_hydrolase")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/soluble_epoxide_hydrolase_freq.csv")
     result.plot("Soluble Epoxide Hydrolase", filename = "results/soluble_epoxide_hydrolase.jpg")
     result.plot("Soluble Epoxide Hydrolase", filename = "results/soluble_epoxide_hydrolase.png")
+    # normalized results
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/soluble_epoxide_hydrolase_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/soluble_epoxide_hydrolase_normalized_freq.csv")
+    result.plot("Soluble Epoxide Hydrolase", filename = "results/soluble_epoxide_hydrolase_normalized.jpg")
+    result.plot("Soluble Epoxide Hydrolase", filename = "results/soluble_epoxide_hydrolase_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
