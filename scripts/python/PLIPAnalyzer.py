@@ -770,7 +770,7 @@ class PLIPAnalyzer:
         ax.bar(self.i_frequencies.keys(), self.i_frequencies.values())
         xlocs, xlabs = plt.xticks()
         for i, v in enumerate(self.i_frequencies.values()):
-            plt.text(xlocs[i], v + label_offset, str(round(v, sig_digits)), horizontalalignment = "center")
+            plt.text(xlocs[i], v + label_offset, str(round(v, sig_digits)), horizontalalignment = "center", rotation = 90)
         plt.title(title)
         plt.xlabel("Interaction")
         if self.normalized:
