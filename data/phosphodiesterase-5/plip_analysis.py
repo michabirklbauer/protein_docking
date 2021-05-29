@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/phosphodiesterase-5")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/phosphodiesterase-5_freq.csv")
     result.plot("Phosphodiesterase-5", filename = "results/phosphodiesterase-5.jpg")
     result.plot("Phosphodiesterase-5", filename = "results/phosphodiesterase-5.png")
+    # normalized results
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/phosphodiesterase-5_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/phosphodiesterase-5_normalized_freq.csv")
+    result.plot("Phosphodiesterase-5", filename = "results/phosphodiesterase-5_normalized.jpg")
+    result.plot("Phosphodiesterase-5", filename = "results/phosphodiesterase-5_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
