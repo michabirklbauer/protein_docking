@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/acetylcholinesterase")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/acetylcholinesterase_freq.csv")
     result.plot("Acetylcholinesterase", filename = "results/acetylcholinesterase.jpg")
     result.plot("Acetylcholinesterase", filename = "results/acetylcholinesterase.png")
+    # normalized analysis
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/acetylcholinesterase_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/acetylcholinesterase_normalized_freq.csv")
+    result.plot("Acetylcholinesterase", filename = "results/acetylcholinesterase_normalized.jpg")
+    result.plot("Acetylcholinesterase", filename = "results/acetylcholinesterase_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
