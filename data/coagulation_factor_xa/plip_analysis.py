@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/coagulation_factor_xa")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/coagulation_factor_xa_freq.csv")
     result.plot("Coagulation Factor XA", filename = "results/coagulation_factor_xa.jpg")
     result.plot("Coagulation Factor XA", filename = "results/coagulation_factor_xa.png")
+    # normalized analysis
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/coagulation_factor_xa_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/coagulation_factor_xa_normalized_freq.csv")
+    result.plot("Coagulation Factor XA", filename = "results/coagulation_factor_xa_normalized.jpg")
+    result.plot("Coagulation Factor XA", filename = "results/coagulation_factor_xa_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
