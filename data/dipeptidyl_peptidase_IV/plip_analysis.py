@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/dipeptidyl_peptidase_IV")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/dipeptidyl_peptidase_IV_freq.csv")
     result.plot("Dipeptidyl Peptidase IV", filename = "results/dipeptidyl_peptidase_IV.jpg")
     result.plot("Dipeptidyl Peptidase IV", filename = "results/dipeptidyl_peptidase_IV.png")
+    # normalized analysis
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/dipeptidyl_peptidase_IV_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/dipeptidyl_peptidase_IV_normalized_freq.csv")
+    result.plot("Dipeptidyl Peptidase IV", filename = "results/dipeptidyl_peptidase_IV_normalized.jpg")
+    result.plot("Dipeptidyl Peptidase IV", filename = "results/dipeptidyl_peptidase_IV_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
