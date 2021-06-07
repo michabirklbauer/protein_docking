@@ -22,13 +22,21 @@ if __name__ == '__main__':
     PDB_ENTRIES = list(df["PDB_ENTRY"])
     print("First 5 PDB entries:")
     print(PDB_ENTRIES[:5])
-    result = pa(PDB_ENTRIES, path = "structures")
+    result = pa(PDB_ENTRIES, path = "structures", normalize = False)
     r = result.save("results/11-beta-hydroxysteroid_dehydrogenase_1")
     print("Result saved in:")
     print(r)
     r = result.to_csv("results/11-beta-hydroxysteroid_dehydrogenase_1_freq.csv")
     result.plot("11-Beta-Hydroxysteroid Dehydrogenase 1", filename = "results/11-beta-hydroxysteroid_dehydrogenase_1.jpg")
     result.plot("11-Beta-Hydroxysteroid Dehydrogenase 1", filename = "results/11-beta-hydroxysteroid_dehydrogenase_1.png")
+    # normalized analysis
+    result = pa(PDB_ENTRIES, path = "structures", normalize = True)
+    r = result.save("results/11-beta-hydroxysteroid_dehydrogenase_1_normalized")
+    print("Result saved in:")
+    print(r)
+    r = result.to_csv("results/11-beta-hydroxysteroid_dehydrogenase_1_normalized_freq.csv")
+    result.plot("11-Beta-Hydroxysteroid Dehydrogenase 1", filename = "results/11-beta-hydroxysteroid_dehydrogenase_1_normalized.jpg")
+    result.plot("11-Beta-Hydroxysteroid Dehydrogenase 1", filename = "results/11-beta-hydroxysteroid_dehydrogenase_1_normalized.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
