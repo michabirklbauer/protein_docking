@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.3.0"
-date = "20210527"
+version = "0.4.0"
+date = "20210608"
 
 import json
 import warnings
@@ -16,6 +16,7 @@ import traceback as tb
 from rdkit import Chem
 from biopandas.pdb import PandasPdb
 from matplotlib import pyplot as plt
+from sklearn.model_selection import train_test_split
 from plip.structure.preparation import PDBComplex
 from plip.basic.config import biolip_list
 
@@ -30,6 +31,14 @@ class CalculationErrorWarning(UserWarning):
     """
     -- DESCRIPTION --
     Displayed if one or more but not all of the results are empty.
+    """
+    pass
+
+class NotInPartitionWarning(UserWarning):
+    """
+    -- DESCRIPTION --
+    Displayed if an entry or interaction is found that does not belong to any
+    data partition.
     """
     pass
 
@@ -369,6 +378,361 @@ class Comparison:
         plt.show()
 
         return fig
+
+class Scoring:
+    """
+    -- DESCRIPTION --
+    """
+
+    pdb_entry_results = None
+    best_pdb_entries = None
+
+    # internal train/val/test keys - set by generate_datasets()
+    entries_train_keys = None
+    entries_val_keys = None
+    entries_test_keys = None
+
+    # constructor to set input files
+    def __init__(self,
+                 pdb_entry_results,
+                 best_pdb_entries,
+                 is_file = [False, False]):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        if is_file[0]:
+            with open(pdb_entry_results, "r", encoding="utf-8") as f:
+                self.pdb_entry_results = json.load(f)
+                f.close()
+        else:
+            self.pdb_entry_results = pdb_entry_results
+
+        if is_file[1]:
+            with open(best_pdb_entries, "r", encoding="utf-8") as f:
+                self.best_pdb_entries = json.load(f)
+                f.close()
+        else:
+            self.best_pdb_entries = best_pdb_entries
+
+    # generate training, validation and test data
+    def generate_datasets(self,
+                          train_output = "data_train.csv",
+                          val_output = "data_val.csv",
+                          test_output = "data_test.csv"):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        # dummy label encoder
+        def get_label(input):
+            if "inactive" in input:
+                return "inactive"
+            else:
+                return "active"
+
+        # extract ligand names
+        ligand_names = []
+        for entry in self.pdb_entry_results:
+            ligand_names.append(self.pdb_entry_results[entry]["ligand_name"])
+
+        # filter for unique ligand names
+        u_names = []
+        for l_name in ligand_names:
+            n = "|".join(l_name.split("|")[:-1])
+            u_names.append(n)
+        unique_names = list(set(u_names))
+
+        # split ligand names by train_size in train, val, test
+        names_train_val, names_test = train_test_split(unique_names, train_size = 0.8, random_state = 42, shuffle = True)
+        names_train, names_val = train_test_split(names_train_val, train_size = 0.8, random_state = 1337, shuffle = True)
+
+        # get train, val and test entries
+        entries_train = []
+        entries_train_keys = []
+        entries_val = []
+        entries_val_keys = []
+        entries_test = []
+        entries_test_keys = []
+        for entry in self.best_pdb_entries:
+            l_name = self.pdb_entry_results[entry]["ligand_name"]
+            l_name_short = "|".join(l_name.split("|")[:-1])
+            if l_name_short in names_train:
+                entries_train.append(self.pdb_entry_results[entry])
+                entries_train_keys.append(entry)
+            elif l_name_short in names_val:
+                entries_val.append(self.pdb_entry_results[entry])
+                entries_val_keys.append(entry)
+            elif l_name_short in names_test:
+                entries_test.append(self.pdb_entry_results[entry])
+                entries_test_keys.append(entry)
+            else:
+                warnings.warn("Oops! " + l_name_short + " not in any data partition! This should not happen!", NotInPartitionWarning)
+
+        # set internal train/val/test keys
+        self.entries_train_keys = entries_train_keys
+        self.entries_val_keys = entries_val_keys
+        self.entries_test_keys = entries_test_keys
+
+        # get interactions in the training partition
+        training_interactions = []
+        for entry in entries_train:
+            interactions = entry["interactions"]
+            for sb in interactions["Salt_Bridges"]:
+                training_interactions.append("Salt_Bridge:" + sb)
+            for hb in interactions["Hydrogen_Bonds"]:
+                training_interactions.append("Hydrogen_Bond:" + hb)
+            for ps in interactions["Pi_Stacking"]:
+                training_interactions.append("Pi-Stacking:" + ps)
+            for pc in interactions["Pi_Cation_Interactions"]:
+                training_interactions.append("Pi-Cation_Interaction:" + pc)
+            for hab in interactions["Halogen_Bonds"]:
+                training_interactions.append("Halogen_Bond:" + hab)
+            for wb in interactions["Water_Bridges"]:
+                training_interactions.append("Water_Bridge:" + wb)
+            for mc in interactions["Metal_Complexes"]:
+                training_interactions.append("Metal_Complex:" + mc)
+        interactions_train = list(set(training_interactions))
+
+        # -- generate training dataset --
+        data_train = {
+            "INDEX": list(range(1, len(entries_train) + 1)),
+            "NAME": ["dummy_name" for entry in entries_train]
+            }
+
+        for i in interactions_train:
+            data_train[i] = [0 for entry in entries_train]
+
+        for i, entry in enumerate(entries_train):
+            data_train["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
+            interactions = entry["interactions"]
+            for sb in interactions["Salt_Bridges"]:
+                data_train["Salt_Bridge:" + sb][i] = data_train["Salt_Bridge:" + sb][i] + 1
+            for hb in interactions["Hydrogen_Bonds"]:
+                data_train["Hydrogen_Bond:" + hb][i] = data_train["Hydrogen_Bond:" + hb][i] + 1
+            for ps in interactions["Pi_Stacking"]:
+                data_train["Pi-Stacking:" + ps][i] = data_train["Pi-Stacking:" + ps][i] + 1
+            for pc in interactions["Pi_Cation_Interactions"]:
+                data_train["Pi-Cation_Interaction:" + pc][i] = data_train["Pi-Cation_Interaction:" + pc][i] + 1
+            for hab in interactions["Halogen_Bonds"]:
+                data_train["Halogen_Bond:" + hab][i] = data_train["Halogen_Bond:" + hab][i] + 1
+            for wb in interactions["Water_Bridges"]:
+                data_train["Water_Bridge:" + wb][i] = data_train["Water_Bridge:" + wb][i] + 1
+            for mc in interactions["Metal_Complexes"]:
+                data_train["Metal_Complex:" + mc][i] = data_train["Metal_Complex:" + mc][i] + 1
+
+        df_train = pd.DataFrame(data_train)
+
+        df_train["LABEL"] = df_train["NAME"].apply(lambda x: get_label(x))
+
+        if df_train.loc[df_train["NAME"] == "dummy_name"].shape[0] == 0:
+            df_train.to_csv(train_output, index = False)
+        else:
+            warnings.warn("Found dummy variables in dataset! Not saving to " + train_output, UserWarning)
+
+        # -- generate validation dataset --
+        data_val = {
+            "INDEX": list(range(1, len(entries_val) + 1)),
+            "NAME": ["dummy_name" for entry in entries_val]
+            }
+
+        for i in interactions_train:
+            data_val[i] = [0 for entry in entries_val]
+
+        for i, entry in enumerate(entries_val):
+            data_val["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
+            interactions = entry["interactions"]
+            for sb in interactions["Salt_Bridges"]:
+                key = "Salt_Bridge:" + sb
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for hb in interactions["Hydrogen_Bonds"]:
+                key = "Hydrogen_Bond:" + hb
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for ps in interactions["Pi_Stacking"]:
+                key = "Pi-Stacking:" + ps
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for pc in interactions["Pi_Cation_Interactions"]:
+                key = "Pi-Cation_Interaction:" + pc
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for hab in interactions["Halogen_Bonds"]:
+                key = "Halogen_Bond:" + hab
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for wb in interactions["Water_Bridges"]:
+                key = "Water_Bridge:" + wb
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+            for mc in interactions["Metal_Complexes"]:
+                key = "Metal_Complex:" + mc
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
+
+        df_val = pd.DataFrame(data_val)
+
+        df_val["LABEL"] = df_val["NAME"].apply(lambda x: get_label(x))
+
+        if df_val.loc[df_val["NAME"] == "dummy_name"].shape[0] == 0:
+            df_val.to_csv(val_output, index = False)
+        else:
+            warnings.warn("Found dummy variables in dataset! Not saving to " + val_output, UserWarning)
+
+        # -- generate test dataset --
+        data_test = {
+            "INDEX": list(range(1, len(entries_test) + 1)),
+            "NAME": ["dummy_name" for entry in entries_test]
+            }
+
+        for i in interactions_train:
+            data_test[i] = [0 for entry in entries_test]
+
+        for i, entry in enumerate(entries_test):
+            data_test["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
+            interactions = entry["interactions"]
+            for sb in interactions["Salt_Bridges"]:
+                key = "Salt_Bridge:" + sb
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for hb in interactions["Hydrogen_Bonds"]:
+                key = "Hydrogen_Bond:" + hb
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for ps in interactions["Pi_Stacking"]:
+                key = "Pi-Stacking:" + ps
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for pc in interactions["Pi_Cation_Interactions"]:
+                key = "Pi-Cation_Interaction:" + pc
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for hab in interactions["Halogen_Bonds"]:
+                key = "Halogen_Bond:" + hab
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for wb in interactions["Water_Bridges"]:
+                key = "Water_Bridge:" + wb
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+            for mc in interactions["Metal_Complexes"]:
+                key = "Metal_Complex:" + mc
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
+
+        df_test = pd.DataFrame(data_test)
+
+        df_test["LABEL"] = df_test["NAME"].apply(lambda x: get_label(x))
+
+        if df_test.loc[df_test["NAME"] == "dummy_name"].shape[0] == 0:
+            df_test.to_csv(test_output, index = False)
+        else:
+            warnings.warn("Found dummy variables in dataset! Not saving to " + test_output, UserWarning)
+
+        # return dataframes
+        return [df_train, df_val, df_test]
+
+    # get active and inactive structures from the training dataset
+    def get_actives_inactives(self,
+                              partition = "train"):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        active_structures = []
+        active_names = []
+        inactive_structures = []
+        inactive_names = []
+
+        if partition == "val":
+            entries_keys = self.entries_val_keys
+        elif partition == "test":
+            entries_keys = self.entries_test_keys
+        else:
+            entries_keys = self.entries_train_keys
+
+        if entries_keys is not None:
+            for key in entries_keys:
+                if "inactive" in self.pdb_entry_results[key]["ligand_name"]:
+                    inactive_structures.append(key)
+                    inactive_names.append(self.pdb_entry_results[key]["ligand_name"])
+                else:
+                    active_structures.append(key)
+                    active_names.append(self.pdb_entry_results[key]["ligand_name"])
+            return {"active_structures": active_structures,
+                    "active_names": active_names,
+                    "inactive_structures": inactive_structures,
+                    "inactive_names": inactive_names}
+        else:
+            warnings.warn("You need to generate the datasets first!", UserWarning)
+            return 1
+
+    # compare actives and inactives
+    def compare(self,
+                partition = "train",
+                path = "current",
+                **kwargs):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        partition_info = self.get_actives_inactives(partition = partition)
+
+        # get result for active ligands
+        result_actives = PLIPAnalyzer(partition_info["active_structures"],
+                                      ligand_names = partition_info["active_names"],
+                                      path = path, **kwargs)
+
+        # get result for inactive ligands
+        result_inactives = PLIPAnalyzer(partition_info["inactive_structures"],
+                                      ligand_names = partition_info["inactive_names"],
+                                      path = path, **kwargs)
+
+        # get comparison
+        comparison = Comparison("Actives", "Inactives",
+                                result_actives.i_frequencies,
+                                result_inactives.i_frequencies)
+
+        # return comparison
+        return comparison
+
+    # get information about interactions (active freq, inactive freq, diff)
+    def get_feature_information(self,
+                                filename = None,
+                                **kwargs):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        comparison = self.compare(partition = "train", **kwargs).comparison
+
+        INTERACTIONS = []
+        DIFFERENCES = []
+        ACTIVE_FREQ = []
+        INACTIVE_FREQ = []
+
+        for key in comparison.keys():
+            INTERACTIONS.append(key)
+            DIFFERENCES.append(comparison[key]["difference"])
+            ACTIVE_FREQ.append(comparison[key]["Actives"])
+            INACTIVE_FREQ.append(comparison[key]["Inactives"])
+
+        features = pd.DataFrame({"INDEX": list(range(1, len(INTERACTIONS) + 1)),
+                                 "INTERACTION": INTERACTIONS,
+                                 "DIFFERENCE": DIFFERENCES,
+                                 "ACTIVE_FREQUENCY": ACTIVE_FREQ,
+                                 "INACTIVE_FREQUENCY": INACTIVE_FREQ})
+
+        if filename is not None:
+            features.to_csv(filename, index = False)
+
+        return features
 
 
 class PLIPAnalyzer:
