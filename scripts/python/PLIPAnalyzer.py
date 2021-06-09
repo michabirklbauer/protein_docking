@@ -480,6 +480,8 @@ class Scoring:
         training_interactions = []
         for entry in entries_train:
             interactions = entry["interactions"]
+            for hc in interactions["Hydrophobic_Contacts"]:
+                training_interactions.append("Hydrophobic_Interaction:" + hc)
             for sb in interactions["Salt_Bridges"]:
                 training_interactions.append("Salt_Bridge:" + sb)
             for hb in interactions["Hydrogen_Bonds"]:
@@ -508,6 +510,8 @@ class Scoring:
         for i, entry in enumerate(entries_train):
             data_train["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
             interactions = entry["interactions"]
+            for hc in interactions["Hydrophobic_Contacts"]:
+                data_train["Hydrophobic_Interaction:" + hc][i] = data_train["Hydrophobic_Interaction:" + hc][i] + 1
             for sb in interactions["Salt_Bridges"]:
                 data_train["Salt_Bridge:" + sb][i] = data_train["Salt_Bridge:" + sb][i] + 1
             for hb in interactions["Hydrogen_Bonds"]:
@@ -544,6 +548,10 @@ class Scoring:
         for i, entry in enumerate(entries_val):
             data_val["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
             interactions = entry["interactions"]
+            for hc in interactions["Hydrophobic_Contacts"]:
+                key = "Hydrophobic_Interaction:" + hc
+                if key in data_val:
+                    data_val[key][i] = data_val[key][i] + 1
             for sb in interactions["Salt_Bridges"]:
                 key = "Salt_Bridge:" + sb
                 if key in data_val:
@@ -594,6 +602,10 @@ class Scoring:
         for i, entry in enumerate(entries_test):
             data_test["NAME"][i] = "|".join(entry["ligand_name"].split("|")[:-1])
             interactions = entry["interactions"]
+            for hc in interactions["Hydrophobic_Contacts"]:
+                key = "Hydrophobic_Interaction:" + hc
+                if key in data_test:
+                    data_test[key][i] = data_test[key][i] + 1
             for sb in interactions["Salt_Bridges"]:
                 key = "Salt_Bridge:" + sb
                 if key in data_test:

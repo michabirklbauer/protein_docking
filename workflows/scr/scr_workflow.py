@@ -57,12 +57,12 @@ if __name__ == '__main__':
         comp_val = s.compare(partition = "val")
         comp_test = s.compare(partition = "test")
         features = s.get_feature_information(filename = "features.csv")
-        comp_train.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Training Partition", filename = "results/sEH_6hgv_results_comparison_train.jpg")
-        comp_train.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Training Partition", filename = "results/sEH_6hgv_results_comparison_train.png")
-        comp_val.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Validation Partition", filename = "results/sEH_6hgv_results_comparison_val.jpg")
-        comp_val.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Validation Partition", filename = "results/sEH_6hgv_results_comparison_val.png")
-        comp_test.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Test Partition", filename = "results/sEH_6hgv_results_comparison_test.jpg")
-        comp_test.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives - Test Partition", filename = "results/sEH_6hgv_results_comparison_test.png")
+        comp_train.plot("SEH: Actives vs. Inactives - Training Set", filename = "results/sEH_6hgv_results_comparison_train.jpg")
+        comp_train.plot("SEH: Actives vs. Inactives - Training Set", filename = "results/sEH_6hgv_results_comparison_train.png")
+        comp_val.plot("SEH: Actives vs. Inactives - Validation Set", filename = "results/sEH_6hgv_results_comparison_val.jpg")
+        comp_val.plot("SEH: Actives vs. Inactives - Validation Set", filename = "results/sEH_6hgv_results_comparison_val.png")
+        comp_test.plot("SEH: Actives vs. Inactives - Test Set", filename = "results/sEH_6hgv_results_comparison_test.jpg")
+        comp_test.plot("SEH: Actives vs. Inactives - Test Set", filename = "results/sEH_6hgv_results_comparison_test.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")
