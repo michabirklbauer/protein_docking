@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.4.0"
-date = "20210608"
+version = "0.4.1"
+date = "20210614"
 
 import json
 import warnings
@@ -19,6 +19,17 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from plip.structure.preparation import PDBComplex
 from plip.basic.config import biolip_list
+
+# Common cofactors found in PDB.
+# List taken from:
+# http://www.ebi.ac.uk/thornton-srv/databases/CoFactor/
+# excluded = ["Coenzyme M", "Factor F430"]
+# 3 letter codes from:
+# https://www.ebi.ac.uk/pdbe-srv/pdbechem/
+# Notes: Heme?, Menaquinone?, MIO?, Molybdopterin?, Orthoquinone residues?, Ubiquinone?
+cofactors = ["B1Z", "ASC", "BIO", "BTN", "COA", "COZ", "TP7", "DPM", "FAD", "FMN",
+             "GSH", "LPA", "MQ7", "MQ8", "MQ9", "NAD", "PNS", "PLP", "PQQ", "SAM",
+             "THF", "TPP", "TPQ", "U10", "UQ1", "UQ2", "UQ7", "UQ8", "UQ9"]
 
 class NoInteractionsWarning(UserWarning):
     """
