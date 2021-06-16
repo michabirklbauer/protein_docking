@@ -1,0 +1,6 @@
+[TODO]
+* blacklist cofactors
+
+[COFACTORS]
+* 2C67: https://plip-tool.biotec.tu-dresden.de/plip-web/plip/result/2d04fc07-028b-4cbe-b610-86182e7cbfe5
+* 1GOS: https://plip-tool.biotec.tu-dresden.de/plip-web/plip/result/e4f7aad6-f0d9-4919-be3c-0d58152b390e
