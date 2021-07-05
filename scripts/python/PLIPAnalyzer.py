@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.4.1"
-date = "20210614"
+version = "0.4.2"
+date = "20210705"
 
 import json
 import warnings
@@ -20,16 +20,42 @@ from sklearn.model_selection import train_test_split
 from plip.structure.preparation import PDBComplex
 from plip.basic.config import biolip_list
 
+#### ----------------------------- COFACTORS ------------------------------ ####
+
 # Common cofactors found in PDB.
 # List taken from:
 # http://www.ebi.ac.uk/thornton-srv/databases/CoFactor/
 # excluded = ["Coenzyme M", "Factor F430"]
 # 3 letter codes from:
 # https://www.ebi.ac.uk/pdbe-srv/pdbechem/
-# Notes: Heme?, Menaquinone?, MIO?, Molybdopterin?, Orthoquinone residues?, Ubiquinone?
+# Notes: Heme? (--> see hemes), Menaquinone? (MQ7 to MQ9 included), MIO?,
+#        Molybdopterin? (--> see molybdopterins), Orthoquinone residues?,
+#        Ubiquinone? (UQ1 to U10 included)
 cofactors = ["B1Z", "ASC", "BIO", "BTN", "COA", "COZ", "TP7", "DPM", "FAD", "FMN",
              "GSH", "LPA", "MQ7", "MQ8", "MQ9", "NAD", "PNS", "PLP", "PQQ", "SAM",
              "THF", "TPP", "TPQ", "U10", "UQ1", "UQ2", "UQ7", "UQ8", "UQ9"]
+
+# Heme cofactors
+# list of shortcodes of heme-like structures from:
+# https://www.ebi.ac.uk/pdbe-srv/pdbechem/
+# query: "Molecule Name like Heme"
+hemes = ["1FH", "2FH", "522", "89R", "DDH", "DHE", "HAS", "HDD", "HDE", "HDM",
+         "HEA", "HEB", "HEC", "HEM", "HEO", "HES", "HEV", "HP5", "MH0", "MHM",
+         "N7H", "NTE", "OBV", "SRM", "VER", "VOV"]
+
+# Molybdopterin cofactors
+# list of shortcodes of molybdopterin-like structures from:
+# https://www.ebi.ac.uk/pdbe-srv/pdbechem/
+# query: "Molecule Name like Molybdopterin"
+molybdopterins = ["2MD", "MGD", "MSS", "MTQ", "MTV", "PCD"]
+
+# a list of userdefined cofactors (should be extended as needed)
+# entries from data/cofactor_info.yaml
+userdef_cofactors = ["NAP", "NDP", "COH"]
+
+exclusion_list = biolip_list + cofactors + hemes + molybdopterins + userdef_cofactors
+
+#### ------------------------------ CLASSES ------------------------------- ####
 
 class NoInteractionsWarning(UserWarning):
     """
@@ -849,7 +875,8 @@ class PLIPAnalyzer:
                 iHet_ID, iChain, iPosition = key.split(":")
                 # discard suspicious ligands
                 # e.g. see -> https://github.com/pharmai/plip/blob/master/plip/basic/config.py
-                if iHet_ID.strip().upper() in biolip_list:
+                # for complete exclusion list --> see top of file <COFACTORS>
+                if iHet_ID.strip().upper() in exclusion_list:
                     continue
                 # discard uninteressted chains
                 if iChain != chain:
