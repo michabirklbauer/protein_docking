@@ -1,0 +1,44 @@
+targets:
+  # HSD11B1
+  - name: 11-Beta-Hydroxysteroid Dehydrogenase 1
+    cofactors:
+    - NAP: https://www.rcsb.org/ligand/NAP
+    - NDP: https://www.rcsb.org/ligand/NDP
+  # ACHE
+  - name: Acetylcholinesterase
+    cofactors: none
+  # FXA
+  - name: Coagulation Factor XA
+    cofactors: none
+  # COX1
+  - name: Cyclooxygenase 1
+    cofactors:
+    - HEM: https://www.rcsb.org/ligand/HEM
+  # COX2
+  - name: Cyclooxygenase 2
+    species: Homo sapiens
+    cofactors:
+    - COH: https://www.rcsb.org/ligand/COH
+  - name: Cyclooxygenase 2
+    species: Mus musculus
+    cofactors:
+    - HEM: https://www.rcsb.org/ligand/HEM
+  # DPP4
+  - name: Dipeptidyl Peptidase IV
+    cofactors: none
+  # MAOB
+  - name: Monoamine Oxidase B
+    cofactors:
+    - FAD: https://www.rcsb.org/ligand/FAD
+  # MAPK14
+  - name: P38 MAP Kinase
+    cofactors: none
+  # PDE5A
+  - name: Phosphodiesterase 5
+    cofactors: none
+  # PTP1B
+  - name: Protein-Tyrosine Phosphatase 1B
+    cofactors: none
+  # SEH
+  - name: Soluble Epoxide Hydrolase
+    cofactors: none
