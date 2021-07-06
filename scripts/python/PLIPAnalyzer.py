@@ -5,7 +5,7 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.4.2"
+version = "0.5.0"
 date = "20210705"
 
 import json
@@ -166,7 +166,7 @@ class Preparation:
         names = self.get_sdf_metainfo(sdf_file)["names"]
 
         for i, name in enumerate(names):
-            if "inactive" in name:
+            if "inactive" in name or "decoy" in name:
                 inactives.append(i)
             else:
                 actives.append(i)
@@ -465,7 +465,7 @@ class Scoring:
 
         # dummy label encoder
         def get_label(input):
-            if "inactive" in input:
+            if "inactive" in input or "decoy" in input:
                 return "inactive"
             else:
                 return "active"
@@ -706,7 +706,7 @@ class Scoring:
 
         if entries_keys is not None:
             for key in entries_keys:
-                if "inactive" in self.pdb_entry_results[key]["ligand_name"]:
+                if "inactive" in self.pdb_entry_results[key]["ligand_name"] or "decoy" in self.pdb_entry_results[key]["ligand_name"]:
                     inactive_structures.append(key)
                     inactive_names.append(self.pdb_entry_results[key]["ligand_name"])
                 else:
