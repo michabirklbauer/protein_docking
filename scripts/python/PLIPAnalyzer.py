@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.0"
-date = "20210705"
+version = "0.5.1"
+date = "20210709"
 
 import json
 import warnings
@@ -807,6 +807,7 @@ class PLIPAnalyzer:
                  path = "current",
                  chain = "A",
                  exclude = ["LIG", "HOH"],
+                 excluded_ligands = exclusion_list,
                  discard_exceeding_hc = True,
                  normalize = True,
                  verbose = 1):
@@ -876,7 +877,8 @@ class PLIPAnalyzer:
                 # discard suspicious ligands
                 # e.g. see -> https://github.com/pharmai/plip/blob/master/plip/basic/config.py
                 # for complete exclusion list --> see top of file <COFACTORS>
-                if iHet_ID.strip().upper() in exclusion_list:
+                # this is expandable via the 'excluded_ligands' parameter
+                if iHet_ID.strip().upper() in excluded_ligands:
                     continue
                 # discard uninteressted chains
                 if iChain != chain:
