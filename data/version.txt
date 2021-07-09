@@ -1,1 +1,18 @@
-results generated with PLIPAnalyzer v0.3.0
+Results* generated with the following versions of PLIPAnalyzer:
+*excluding scoring results
+
+11-Beta-Hydroxysteroid Dehydrogenase 1  | 0.5.1
+  with cofactor interactions            | 0.3.0
+Acetylcholinesterase                    | 0.5.1
+Coagulation Factor XA                   | 0.3.0
+Cyclooxygenase 1                        | 0.5.1
+  with cofactor interactions            | 0.3.0
+Cyclooxygenase 2                        | 0.5.1
+  with cofactor interactions            | 0.3.0
+Dipeptidyl Peptidase IV                 | 0.3.0
+Monoamine Oxidase B                     | 0.5.1
+  with cofactor interactions            | 0.3.0
+P38 MAP Kinase                          | 0.3.0
+Phosphodiesterase 5                     | 0.3.0
+Protein-Tyrosine Phosphatase 1B         | 0.3.0
+Soluble Epoxide Hydrolase               | 0.3.0
