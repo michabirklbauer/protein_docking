@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.1"
-date = "20210709"
+version = "0.5.2"
+date = "20210801"
 
 import json
 import warnings
@@ -151,21 +151,28 @@ class Preparation:
             f.close()
 
         ic50s = []
-        NA_counter = 0
+        NA_counter1 = 0
+        NA_counter2 = 0
         mols = content.split("$$$$")
         for mol in mols:
             mol_cleaned = mol.strip()
             if mol_cleaned != "":
-                tmp = mol_cleaned.split("> <IC50 5-LO>")[1]
+                try:
+                    tmp = mol_cleaned.split("> <IC50 5-LO>")[1]
+                except IndexError as l:
+                    NA_counter1= NA_counter1 + 1
+                    ic50 = NA
                 try:
                     ic50 = float(tmp.split(">")[0])
                 except ValueError as e:
-                    NA_counter = NA_counter + 1
+                    NA_counter2 = NA_counter2 + 1
                     ic50 = NA
                 ic50s.append(ic50)
 
-        if NA_counter != 0:
-            print("NAs encountered in " + NA_counter + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
+        if NA_counter1 != 0:
+            print("IC50 not available in " + NA_counter1 + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
+        if NA_counter2 != 0:
+            print("NAs encountered in " + NA_counter2 + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
         return ic50s
 
     # get names and GOLD fitness from sdf file
