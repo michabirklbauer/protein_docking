@@ -139,8 +139,7 @@ class Preparation:
 
     # get GOLD IC50 5-LO values
     def get_sdf_IC50s(self,
-                      sdf_file,
-                      NA = 1000.0):
+                      sdf_file):
 
         """
         -- DESCRIPTION --
@@ -159,20 +158,20 @@ class Preparation:
             if mol_cleaned != "":
                 try:
                     tmp = mol_cleaned.split("> <IC50 5-LO>")[1]
+                    try:
+                        ic50 = float(tmp.split(">")[0])
+                    except ValueError as e:
+                        NA_counter2 = NA_counter2 + 1
+                        ic50 = None
                 except IndexError as l:
                     NA_counter1= NA_counter1 + 1
-                    ic50 = NA
-                try:
-                    ic50 = float(tmp.split(">")[0])
-                except ValueError as e:
-                    NA_counter2 = NA_counter2 + 1
-                    ic50 = NA
+                    ic50 = None
                 ic50s.append(ic50)
 
         if NA_counter1 != 0:
-            print("IC50 not available in " + NA_counter1 + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
+            print("IC50 not available in " + NA_counter1 + " molecules. Molecules will be skipped if labeled!")
         if NA_counter2 != 0:
-            print("NAs encountered in " + NA_counter2 + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
+            print("NAs encountered in " + NA_counter2 + " molecules. Molecules will be skipped if labeled!")
         return ic50s
 
     # get names and GOLD fitness from sdf file
@@ -201,51 +200,59 @@ class Preparation:
         -- DESCRIPTION --
         """
 
+        ligands = self.get_ligands(sdf_file)
         names = self.get_sdf_names(sdf_file)
         ic50s = self.get_sdf_IC50s(sdf_file)
 
+        new_ligands = []
         new_names = []
+        skipped_counter = 0
 
         if len(names) != len(ic50s):
             raise ParseError("SDF file could not be parsed [nr of names != nr of IC50s].")
         else:
             for i, name in enumerate(names):
-                name_split = name.split("|")
-                if condition_operator == "==":
-                    if ic50s[i] == condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
-                elif condition_operator == "<=":
-                    if ic50s[i] <= condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
-                elif condition_operator == "<":
-                    if ic50s[i] < condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
-                elif condition_operator == ">=":
-                    if ic50s[i] >= condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
-                elif condition_operator == ">":
-                    if ic50s[i] > condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
-                elif condition_operator == "!=":
-                    if ic50s[i] != condition_value:
-                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
-                    else:
-                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                if ic50s[i] == None:
+                    skipped_counter = skipped_counter + 1
                 else:
-                    new_name = name
-                new_names.append(new_name)
+                    name_split = name.split("|")
+                    if condition_operator == "==":
+                        if ic50s[i] == condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    elif condition_operator == "<=":
+                        if ic50s[i] <= condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    elif condition_operator == "<":
+                        if ic50s[i] < condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    elif condition_operator == ">=":
+                        if ic50s[i] >= condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    elif condition_operator == ">":
+                        if ic50s[i] > condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    elif condition_operator == "!=":
+                        if ic50s[i] != condition_value:
+                            new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                        else:
+                            new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name
+                    new_ligands.append(ligand[i])
+                    new_names.append(new_name)
 
-            return new_names
+            print("IC50 unavailable in " + str(skipped_counter) + " molecules [skipped].")
+            return {"ligands": new_ligands, "names": new_names}
 
     # get indices of active and inactive molecules in sdf file
     def actives_inactives_split(self,
