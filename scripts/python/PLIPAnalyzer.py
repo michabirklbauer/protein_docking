@@ -5,7 +5,7 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.2"
+version = "0.5.3"
 date = "20210801"
 
 import json
@@ -169,9 +169,9 @@ class Preparation:
                 ic50s.append(ic50)
 
         if NA_counter1 != 0:
-            print("IC50 not available in " + NA_counter1 + " molecules. Molecules will be skipped if labeled!")
+            print("IC50 not available in " + str(NA_counter1) + " molecules. Molecules will be skipped if labeled!")
         if NA_counter2 != 0:
-            print("NAs encountered in " + NA_counter2 + " molecules. Molecules will be skipped if labeled!")
+            print("NAs encountered in " + str(NA_counter2) + " molecules. Molecules will be skipped if labeled!")
         return ic50s
 
     # get names and GOLD fitness from sdf file
