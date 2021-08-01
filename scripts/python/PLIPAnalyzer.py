@@ -139,7 +139,8 @@ class Preparation:
 
     # get GOLD IC50 5-LO values
     def get_sdf_IC50s(self,
-                      sdf_file):
+                      sdf_file,
+                      NA = 1000.0):
 
         """
         -- DESCRIPTION --
@@ -150,14 +151,21 @@ class Preparation:
             f.close()
 
         ic50s = []
+        NA_counter = 0
         mols = content.split("$$$$")
         for mol in mols:
             mol_cleaned = mol.strip()
             if mol_cleaned != "":
                 tmp = mol_cleaned.split("> <IC50 5-LO>")[1]
-                ic50 = float(tmp.split(">")[0])
+                try:
+                    ic50 = float(tmp.split(">")[0])
+                except ValueError as e:
+                    NA_counter = NA_counter + 1
+                    ic50 = NA
                 ic50s.append(ic50)
 
+        if NA_counter != 0:
+            print("NAs encountered in " + NA_counter + " molecules. IC50 value substituted as " + str(NA) + " (defined in get_sdf_IC50s).")
         return ic50s
 
     # get names and GOLD fitness from sdf file
