@@ -137,6 +137,29 @@ class Preparation:
 
         return scores
 
+    # get GOLD IC50 5-LO values
+    def get_sdf_IC50s(self,
+                      sdf_file):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        with open(sdf_file, "r") as f:
+            content = f.read()
+            f.close()
+
+        ic50s = []
+        mols = content.split("$$$$")
+        for mol in mols:
+            mol_cleaned = mol.strip()
+            if mol_cleaned != "":
+                tmp = mol_cleaned.split("> <IC50 5-LO>")[1]
+                ic50 = float(tmp.split(">")[0])
+                ic50s.append(ic50)
+
+        return ic50s
+
     # get names and GOLD fitness from sdf file
     def get_sdf_metainfo(self,
                          sdf_file):
@@ -152,6 +175,62 @@ class Preparation:
             return {"names": names, "fitness": scores}
         else:
             raise ParseError("SDF file could not be parsed [nr of names != nr of scores].")
+
+    # label names as active or decoy depending on IC50
+    def get_labeled_names(self,
+                          sdf_file,
+                          condition_operator = "==",
+                          condition_value = 1000):
+
+        """
+        -- DESCRIPTION --
+        """
+
+        names = self.get_sdf_names(sdf_file)
+        ic50s = self.get_sdf_IC50s(sdf_file)
+
+        new_names = []
+
+        if len(names) != len(ic50s):
+            raise ParseError("SDF file could not be parsed [nr of names != nr of IC50s].")
+        else:
+            for i, name in enumerate(names):
+                name_split = name.split("|")
+                if condition_operator == "==":
+                    if ic50s[i] == condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                elif condition_operator == "<=":
+                    if ic50s[i] <= condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                elif condition_operator == "<":
+                    if ic50s[i] < condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                elif condition_operator == ">=":
+                    if ic50s[i] >= condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                elif condition_operator == ">":
+                    if ic50s[i] > condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                elif condition_operator == "!=":
+                    if ic50s[i] != condition_value:
+                        new_name = name_split[0] + "|" + name_split[1] + "_decoy|" + "|".join(name_split[2:])
+                    else:
+                        new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
+                else:
+                    new_name = name
+                new_names.append(new_name)
+
+            return new_names
 
     # get indices of active and inactive molecules in sdf file
     def actives_inactives_split(self,
