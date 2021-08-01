@@ -5,7 +5,7 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.3"
+version = "0.5.4"
 date = "20210801"
 
 import json
@@ -248,7 +248,7 @@ class Preparation:
                             new_name = name_split[0] + "|" + name_split[1] + "_active|" + "|".join(name_split[2:])
                     else:
                         new_name = name
-                    new_ligands.append(ligand[i])
+                    new_ligands.append(ligands[i])
                     new_names.append(new_name)
 
             print("IC50 unavailable in " + str(skipped_counter) + " molecules [skipped].")
