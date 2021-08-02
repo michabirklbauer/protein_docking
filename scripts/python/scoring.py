@@ -101,7 +101,7 @@ def get_cutoff(labels,
     best_cutoff = 0
     best_accuracy = 0
 
-    for i in range(0, max(scores) + 1, 1):
+    for i in range(min(scores), max(scores) + 1, 1):
         predicted = ["active" if score >= i else "inactive" for score in scores]
         agreement = 0
         for j, label in enumerate(labels):
