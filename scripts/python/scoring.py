@@ -5,6 +5,9 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
+version = "1.0.0"
+date = "20210804"
+
 """
 DESCRIPTION
 """
