@@ -212,7 +212,8 @@ def get_metrics(dataframe,
 
 # get optimal threshold values for feature extraction
 def get_optimized_feature_thresholds(features,
-                                     dataframe):
+                                     dataframe,
+                                     stepsize = 0.05):
 
     """
     -- DESCRIPTION --
@@ -221,9 +222,9 @@ def get_optimized_feature_thresholds(features,
     runs_acc = {}
     runs_auc = {}
 
-    for diff_threshold in range(0, 1.05, 0.05):
-        for active_threshold in range(0, 1.05, 0.05):
-            for inactive_threshold in range(0, 1.05, 0.05):
+    for diff_threshold in range(0, 1 + stepsize, stepsize):
+        for active_threshold in range(0, 1 + stepsize, stepsize):
+            for inactive_threshold in range(0, 1 + stepsize, stepsize):
 
                 features_filtered = get_relevant_features(features, diff_threshold, active_threshold, inactive_threshold)
                 positives, negatives = get_feature_impact(features_filtered)
