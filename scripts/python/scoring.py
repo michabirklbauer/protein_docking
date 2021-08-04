@@ -222,9 +222,9 @@ def get_optimized_feature_thresholds(features,
     runs_acc = {}
     runs_auc = {}
 
-    for diff_threshold in range(0, 1.0 + float(stepsize), stepsize):
-        for active_threshold in range(0, 1.0 + float(stepsize), stepsize):
-            for inactive_threshold in range(0, 1.0 + float(stepsize), stepsize):
+    for diff_threshold in np.arrange(0.0, 1.0 + float(stepsize), float(stepsize)):
+        for active_threshold in np.arrange(0.0, 1.0 + float(stepsize), float(stepsize)):
+            for inactive_threshold in np.arrange(0.0, 1.0 + float(stepsize), float(stepsize)):
 
                 features_filtered = get_relevant_features(features, diff_threshold, active_threshold, inactive_threshold)
                 positives, negatives = get_feature_impact(features_filtered)
