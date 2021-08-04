@@ -210,6 +210,56 @@ def get_metrics(dataframe,
                 "CM": confusion_matrix(y_true, y_predicted),
                 "ROC": {"fpr": roc_fpr, "tpr": roc_tpr}}
 
+# get optimal threshold values for feature extraction
+def get_optimized_feature_thresholds(features,
+                                     dataframe):
+
+    """
+    -- DESCRIPTION --
+    """
+
+    runs_acc = {}
+    runs_auc = {}
+
+    for diff_threshold in range(0, 1.05, 0.05):
+        for active_threshold in range(0, 1.05, 0.05):
+            for inactive_threshold in range(0, 1.05, 0.05):
+
+                features_filtered = get_relevant_features(features, diff_threshold, active_threshold, inactive_threshold)
+                positives, negatives = get_feature_impact(features_filtered)
+
+                data_strat1 = dataframe.copy()
+                data_strat2 = dataframe.copy()
+                data_strat3 = dataframe.copy()
+                data_strat4 = dataframe.copy()
+                data_strat1["SCORE"] = data_strat1.apply(lambda x: score(x, positives, negatives, "+"), axis = 1)
+                data_strat2["SCORE"] = data_strat2.apply(lambda x: score(x, positives, negatives, "++"), axis = 1)
+                data_strat3["SCORE"] = data_strat3.apply(lambda x: score(x, positives, negatives, "+-"), axis = 1)
+                data_strat4["SCORE"] = data_strat4.apply(lambda x: score(x, positives, negatives, "++--"), axis = 1)
+
+                strat1 = get_cutoff(data_strat1["LABEL"].to_list(), data_strat1["SCORE"].to_list())
+                strat2 = get_cutoff(data_strat2["LABEL"].to_list(), data_strat2["SCORE"].to_list())
+                strat3 = get_cutoff(data_strat3["LABEL"].to_list(), data_strat3["SCORE"].to_list())
+                strat4 = get_cutoff(data_strat4["LABEL"].to_list(), data_strat4["SCORE"].to_list())
+
+                metrics_strat1 = get_metrics(data_strat1, strat1[0])
+                metrics_strat2 = get_metrics(data_strat2, strat2[0])
+                metrics_strat3 = get_metrics(data_strat3, strat3[0])
+                metrics_strat4 = get_metrics(data_strat4, strat4[0])
+
+                key = str(diff_threshold) + ", " + str(active_threshold) + ", " + str(inactive_threshold) + ": "
+                runs_acc[key + "strat1"] = metrics_strat1["ACC"]
+                runs_auc[key + "strat1"] = metrics_strat1["AUC"]
+                runs_acc[key + "strat2"] = metrics_strat2["ACC"]
+                runs_auc[key + "strat2"] = metrics_strat2["AUC"]
+                runs_acc[key + "strat3"] = metrics_strat3["ACC"]
+                runs_auc[key + "strat3"] = metrics_strat3["AUC"]
+                runs_acc[key + "strat4"] = metrics_strat4["ACC"]
+                runs_auc[key + "strat4"] = metrics_strat4["AUC"]
+
+    return {"ACC": dict(sorted(runs_acc.items(), key = lambda x: x[1], reverse = True)),
+            "AUC": dict(sorted(runs_auc.items(), key = lambda x: x[1], reverse = True))}
+
 # plot ROC curve
 def plot_ROC_curve(fpr,
                    tpr,
