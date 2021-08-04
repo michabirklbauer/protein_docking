@@ -1,0 +1,2 @@
+Plots correspond to best strategy in terms of accuracy on the validation set.
+-> As given by get_optimized_feature_thresholds(**, validation = data_val)
