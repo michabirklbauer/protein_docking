@@ -213,6 +213,7 @@ def get_metrics(dataframe,
 # get optimal threshold values for feature extraction
 def get_optimized_feature_thresholds(features,
                                      dataframe,
+                                     validation = None,
                                      stepsize = 0.05):
 
     """
@@ -245,31 +246,64 @@ def get_optimized_feature_thresholds(features,
 
                 key = str(diff_threshold) + ", " + str(active_threshold) + ", " + str(inactive_threshold) + ": "
 
-                try:
-                    metrics_strat1 = get_metrics(data_strat1, strat1[0])
-                    runs_acc[key + "strat1"] = metrics_strat1["ACC"]
-                    runs_auc[key + "strat1"] = metrics_strat1["AUC"]
-                except ZeroDivisionError as e:
-                    pass
-                try:
-                    metrics_strat2 = get_metrics(data_strat2, strat2[0])
-                    runs_acc[key + "strat2"] = metrics_strat2["ACC"]
-                    runs_auc[key + "strat2"] = metrics_strat2["AUC"]
-                except ZeroDivisionError as e:
-                    pass
-                try:
-                    metrics_strat3 = get_metrics(data_strat3, strat3[0])
-                    runs_acc[key + "strat3"] = metrics_strat3["ACC"]
-                    runs_auc[key + "strat3"] = metrics_strat3["AUC"]
-                except ZeroDivisionError as e:
-                    pass
-                try:
-                    metrics_strat4 = get_metrics(data_strat4, strat4[0])
-                    runs_acc[key + "strat4"] = metrics_strat4["ACC"]
-                    runs_auc[key + "strat4"] = metrics_strat4["AUC"]
-                except ZeroDivisionError as e:
-                    pass
-
+                if validation is not None:
+                    val_strat1 = validation.copy()
+                    val_strat2 = validation.copy()
+                    val_strat3 = validation.copy()
+                    val_strat4 = validation.copy()
+                    val_strat1["SCORE"] = val_strat1.apply(lambda x: score(x, positives, negatives, "+"), axis = 1)
+                    val_strat2["SCORE"] = val_strat2.apply(lambda x: score(x, positives, negatives, "++"), axis = 1)
+                    val_strat3["SCORE"] = val_strat3.apply(lambda x: score(x, positives, negatives, "+-"), axis = 1)
+                    val_strat4["SCORE"] = val_strat4.apply(lambda x: score(x, positives, negatives, "++--"), axis = 1)
+                    try:
+                        metrics_strat1 = get_metrics(val_strat1, strat1[0])
+                        runs_acc[key + "strat1"] = metrics_strat1["ACC"]
+                        runs_auc[key + "strat1"] = metrics_strat1["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat2 = get_metrics(val_strat2, strat2[0])
+                        runs_acc[key + "strat2"] = metrics_strat2["ACC"]
+                        runs_auc[key + "strat2"] = metrics_strat2["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat3 = get_metrics(val_strat3, strat3[0])
+                        runs_acc[key + "strat3"] = metrics_strat3["ACC"]
+                        runs_auc[key + "strat3"] = metrics_strat3["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat4 = get_metrics(val_strat4, strat4[0])
+                        runs_acc[key + "strat4"] = metrics_strat4["ACC"]
+                        runs_auc[key + "strat4"] = metrics_strat4["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                else:
+                    try:
+                        metrics_strat1 = get_metrics(data_strat1, strat1[0])
+                        runs_acc[key + "strat1"] = metrics_strat1["ACC"]
+                        runs_auc[key + "strat1"] = metrics_strat1["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat2 = get_metrics(data_strat2, strat2[0])
+                        runs_acc[key + "strat2"] = metrics_strat2["ACC"]
+                        runs_auc[key + "strat2"] = metrics_strat2["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat3 = get_metrics(data_strat3, strat3[0])
+                        runs_acc[key + "strat3"] = metrics_strat3["ACC"]
+                        runs_auc[key + "strat3"] = metrics_strat3["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
+                    try:
+                        metrics_strat4 = get_metrics(data_strat4, strat4[0])
+                        runs_acc[key + "strat4"] = metrics_strat4["ACC"]
+                        runs_auc[key + "strat4"] = metrics_strat4["AUC"]
+                    except ZeroDivisionError as e:
+                        pass
 
     return {"ACC": dict(sorted(runs_acc.items(), key = lambda x: x[1], reverse = True)),
             "AUC": dict(sorted(runs_auc.items(), key = lambda x: x[1], reverse = True))}
