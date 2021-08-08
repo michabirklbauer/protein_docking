@@ -1,5 +1,0 @@
-https://stackoverflow.com/questions/123198/how-can-a-file-be-copied
-https://stackabuse.com/how-to-copy-a-file-in-python/
-https://duckduckgo.com/?q=python+shutil+delete+file&t=ffab&ia=web
-https://stackoverflow.com/questions/6996603/how-to-delete-a-file-or-folder
-https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm

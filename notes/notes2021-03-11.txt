@@ -1,9 +1,0 @@
-RESULTS:
-+ add LIG, HOH
-+ add Aminoacid Identifier
-
-PIPELINE:
-+ SDF Dockings into PDB
-
-OPTIONAL:
-+ Enumeration of Water Molecules fix (HOH)
