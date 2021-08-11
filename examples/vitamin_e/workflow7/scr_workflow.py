@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# SCORING WORKFLOW - VITAMIN E 3
+# SCORING WORKFLOW - VITAMIN E WORKFLOW7
 # 2021 (c) Micha Johannes Birklbauer
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         # clean PDB file
         pdb = p.remove_ligands("6ncf.pdb", "6ncf_cleaned.pdb")
         # read ligands from docking SDF file
-        ligands_info = p.get_labeled_names("Vitamin_E_7_Workflow_Angers.sdf")
+        ligands_info = p.get_labeled_names("Vitamin_E_7_Workflow_Angers.sdf", ">=", 1000)
         ligands = ligands_info["ligands"]
         # get labeled ligand names
         ligand_names = ligands_info["names"]
@@ -57,12 +57,12 @@ if __name__ == '__main__':
         comp_val = s.compare(partition = "val")
         comp_test = s.compare(partition = "test")
         features = s.get_feature_information(filename = "features.csv")
-        comp_train.plot("Vitamin E: Actives vs. Inactives - Training Set", filename = "results/vite_6ncf_results_comparison_train.jpg")
-        comp_train.plot("Vitamin E: Actives vs. Inactives - Training Set", filename = "results/vite_6ncf_results_comparison_train.png")
-        comp_val.plot("Vitamin E: Actives vs. Inactives - Validation Set", filename = "results/vite_6ncf_results_comparison_val.jpg")
-        comp_val.plot("Vitamin E: Actives vs. Inactives - Validation Set", filename = "results/vite_6ncf_results_comparison_val.png")
-        comp_test.plot("Vitamin E: Actives vs. Inactives - Test Set", filename = "results/vite_6ncf_results_comparison_test.jpg")
-        comp_test.plot("Vitamin E: Actives vs. Inactives - Test Set", filename = "results/vite_6ncf_results_comparison_test.png")
+        comp_train.plot("Vitamin E - W7: Actives vs. Inactives - Training Set", filename = "results/vite_6ncf_results_comparison_train.jpg")
+        comp_train.plot("Vitamin E - W7: Actives vs. Inactives - Training Set", filename = "results/vite_6ncf_results_comparison_train.png")
+        comp_val.plot("Vitamin E - W7: Actives vs. Inactives - Validation Set", filename = "results/vite_6ncf_results_comparison_val.jpg")
+        comp_val.plot("Vitamin E - W7: Actives vs. Inactives - Validation Set", filename = "results/vite_6ncf_results_comparison_val.png")
+        comp_test.plot("Vitamin E - W7: Actives vs. Inactives - Test Set", filename = "results/vite_6ncf_results_comparison_test.jpg")
+        comp_test.plot("Vitamin E - W7: Actives vs. Inactives - Test Set", filename = "results/vite_6ncf_results_comparison_test.png")
 
     # clean up
     os.remove("PLIPAnalyzer.py")

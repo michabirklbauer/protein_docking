@@ -1,1 +1,1 @@
-In all workflows 300 structures were excluded from analysis because of missing IC50 values.
+In workflows 5, 6 and 7 there were 300 structures excluded from analysis because of missing IC50 values.
