@@ -5,8 +5,8 @@
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.4"
-date = "20210801"
+version = "0.5.5"
+date = "20210811"
 
 """
 DESCRIPTION
@@ -560,6 +560,8 @@ class Scoring:
 
     # generate training, validation and test data
     def generate_datasets(self,
+                          test_size = 0.2,
+                          val_size = 0.2,
                           train_output = "data_train.csv",
                           val_output = "data_val.csv",
                           test_output = "data_test.csv"):
@@ -588,8 +590,8 @@ class Scoring:
         unique_names = list(set(u_names))
 
         # split ligand names by train_size in train, val, test
-        names_train_val, names_test = train_test_split(unique_names, train_size = 0.8, random_state = 42, shuffle = True)
-        names_train, names_val = train_test_split(names_train_val, train_size = 0.8, random_state = 1337, shuffle = True)
+        names_train_val, names_test = train_test_split(unique_names, train_size = 1 - test_size, random_state = 42, shuffle = True)
+        names_train, names_val = train_test_split(names_train_val, train_size = 1 - val_size, random_state = 1337, shuffle = True)
 
         # get train, val and test entries
         entries_train = []
