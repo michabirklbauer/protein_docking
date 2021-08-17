@@ -10,6 +10,10 @@ Workflow6.1
 https://github.com/michabirklbauer/protein_docking/blob/master/examples/vitamin_e/workflow6.1/scoring.ipynb
 Strategy 2:  {'ACC': 0.5, 'FPR': 0.9, 'AUC': 0.49375, 'Ya': 0.5714285714285714, 'EF': 0.9285714285714285, 'REF': 75.0}
 
+Workflow6.1 with decoys
+https://github.com/michabirklbauer/protein_docking/blob/master/examples/vitamin_e/decoys/scoring.ipynb
+Strategy 3: {'ACC': 0.92, 'FPR': 0.02127659574468085, 'AUC': 0.7100078802206462, 'Ya': 0.0, 'EF': 0.0, 'REF': 0.0}
+
 Workflow7
 https://github.com/michabirklbauer/protein_docking/blob/master/examples/vitamin_e/workflow7/scoring.ipynb
 Strategy 4:  {'ACC': 0.6551724137931034, 'FPR': 0.8, 'AUC': 0.5052631578947369, 'Ya': 0.68, 'EF': 1.0378947368421054, 'REF': 89.47368421052632}
