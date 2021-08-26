@@ -117,10 +117,10 @@ def add_ligands(input_file, output_file, ligands, ligand_IDs = None, ligand_chai
 # main streamlit application
 def main():
 
-    st.title("Interaction Frequency Analyzer")
+    st.title("PIA: Protein Interaction Analyzer")
 
     st.write("""
-    Calculate interaction frequencies accross different protein-ligand complexes based on PLIP.
+    Calculate interaction frequencies accross different protein-ligand complexes based on <a href="https://github.com/pharmai/plip" target="_blank">PLIP</a>.
     """)
 
     st.write("""
