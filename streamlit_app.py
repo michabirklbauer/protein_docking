@@ -119,9 +119,9 @@ def main():
 
     st.title("PIA: Protein Interaction Analyzer")
 
-    st.write("""
+    st.markdown("""
     Calculate interaction frequencies accross different protein-ligand complexes based on <a href="https://github.com/pharmai/plip" target="_blank">PLIP</a>.
-    """)
+    """, unsafe_allow_html=True)
 
     st.write("""
     ### Upload a PDB base structure!
