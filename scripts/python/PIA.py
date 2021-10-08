@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 
-# PLIP ANALYZER
+# PIA - PROTEIN INTERACTION ANALYZER
 # 2021 (c) Micha Johannes Birklbauer
 # https://github.com/michabirklbauer/
 # micha.birklbauer@gmail.com
 
-version = "0.5.5"
-date = "20210811"
+version = "1.0.0"
+date = "20210901"
 
 """
 DESCRIPTION
+PIA - short for Protein Interaction Analyzer - is set of scripts and workflows
+written in python to extract interactions from multiple protein-ligand complexes
+and calculate their frequencies. In combination with PIAScore this information
+can be used for interaction-frequency-based scoring. For more information on how
+to apply PIA please refer to the thesis about this work in /docs and the
+exemplary workflows in /workflows.
 """
 
 import json
@@ -91,7 +97,16 @@ class ParseError(RuntimeError):
     pass
 
 class Preparation:
-    """to be implemented"""
+    """
+    -- DESCRIPTION --
+    Dummy class containing structure preparation functions.
+    It's usually enough to initialize this class once at the start of a script
+    by calling:
+    ```
+    prep = Preparation()
+    ```
+    And just use this instance for all structure manipulations.
+    """
 
     # empty constructor
     def __init__(self):
@@ -103,6 +118,14 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Get molecule names from an SDF file - assuming the first line is the
+        molecule name! If the file was generated with GOLD it's recommended to
+        use get_sdf_metainfo() instead since that function has proper error
+        handling!
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - list of molecule names (list of strings)
         """
 
         with open(sdf_file, "r") as f:
@@ -124,6 +147,13 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Get the GOLD fitness score from a GOLD generated SDF file. It's
+        recommended to use get_sdf_metainfo() instead since that function has
+        proper error handling!
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - list of GOLD fitness scores (list of floats)
         """
 
         with open(sdf_file, "r") as f:
@@ -147,6 +177,14 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Get IC50 values from a SDF file - assuming the field <IC50 5-LO> exists!
+        If a molecule does not have an IC50 value or the field does not exist,
+        the corresponding entry will be "None". If any of these cases are
+        encountered a warning will be printed!
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - list of IC50 values (list of floats)
         """
 
         with open(sdf_file, "r") as f:
@@ -184,6 +222,15 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        This is a wrapper function that combines get_sdf_names() and
+        get_sdf_fitness() with additional constraint checking to ensure
+        correct results. If the number of molecule names is not equal to the
+        number of fitness scores a "ParseError" will be raised.
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - dictionary with keys "names" (list of strings) and "scores" (list
+              of floats)
         """
 
         names = self.get_sdf_names(sdf_file)
@@ -197,11 +244,35 @@ class Preparation:
     # label names as active or decoy depending on IC50
     def get_labeled_names(self,
                           sdf_file,
-                          condition_operator = "==",
+                          condition_operator = ">=",
                           condition_value = 1000):
 
         """
         -- DESCRIPTION --
+        Get labelled molecule names from an SDF file with IC50 values. This will
+        label molecule names with either "*_active" or "*_decoy" depending on
+        the labelling criterion. These names can then be used for training a
+        scoring function.
+
+        Labelling is dependent on the "condition_operator" parameter and the
+        "condition_value" parameter. The molecule is labelled as inactive if the
+        IC50 values is "condition_operator" "condition_value" e.g. if
+        "condition_operator" is ">=" and "condition_value" is "1000" then all
+        molecules where "IC50 >= 1000" are labelled as inactive with subfix
+        "_decoy".
+
+        Any molecule that does not have an IC50 value is not labelled and not
+        returned!
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+            - condition_operator (string): one of "==", "!=", "<=", "<", ">=",
+                                                  ">".
+                DEFAULT: ">="
+            - condition_value (int or float): reference value
+                DEFAULT: 1000
+          RETURNS:
+            - dictionary with keys "ligands" (list of RDKit molecules) and
+              "names" (list of strings)
         """
 
         ligands = self.get_ligands(sdf_file)
@@ -264,6 +335,13 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Get indices of active and inactive molecules in a SDF file.
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - list of two lists: first list containing indices of active
+              molecules (list of ints) and second list containing indices
+              of inactive molecules (list of ints)
         """
 
         actives = []
@@ -285,6 +363,14 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Function to remove ligands/small molecules from a PDB file and write the
+        cleaned PDB structure to a new file.
+          PARAMS:
+            - input_file (string): path to a PDB file
+            - output_file (string): path and name where resulting PDB structure
+                                    should be written to
+          RETURNS:
+            - Cleaned PDB structure (PandasPdb object)
         """
 
         mol = PDBComplex()
@@ -330,6 +416,11 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Get ligands from a SDF file.
+          PARAMS:
+            - sdf_file (string): path to a SDF file
+          RETURNS:
+            - list of ligand molecules (list of RDKit molecules)
         """
 
         return [ x for x in Chem.SDMolSupplier(sdf_file)]
@@ -345,6 +436,25 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Add one or more ligands to a single PDB structure/file.
+          PARAMS:
+            - input_file (string): path to a PDB file
+            - output_file (string): path and name where resulting PDB structure
+                                    should be written to
+            - ligands (list of RDKit molecules): list of molecules to be added
+                                                 to structure
+            - ligand_IDs (list of strings): list of ligand ID codes
+                DEFAULT: None (ligands will be named LG1, LG2, etc.)
+            - ligand_chain_IDs (list of strings): list of ligand chains
+                DEFAULT: None (ligands will have chain ID "A")
+            - verbose (0 or 1/True of False): print merging info to std output
+                                              or not
+                DEFAULT: 1
+          RETURNS:
+            - 0: All ligands added successfully to structure
+            - 1: Some of the ligands added successfully to structure
+            - 2: No ligand was successfully added to structure and no file was
+                 created
         """
 
         if ligand_IDs is None:
@@ -400,6 +510,19 @@ class Preparation:
 
         """
         -- DESCRIPTION --
+        Write ligands into separate PDB files.
+          PARAMS:
+            - input_file (string): path to a PDB file
+            - output_path (string): path where resulting PDB files should be
+                                    written to (accepts "", ".", "current" for
+                                    the current directory)
+            - ligands (list of RDKit molecules): ligands that should be added
+            - ligands_per_file (int): how many ligands should be added to one
+                                      PDB file
+                DEFAULT: 1
+            - **kwargs: any additional PARAMS are passed to add_ligands()
+          RETURNS:
+            - list of paths to created PDB files (list of strings)
         """
 
         output_files = []
@@ -420,6 +543,8 @@ class Preparation:
 class Comparison:
     """
     -- DESCRIPTION --
+    Class for comparing interaction frequencies of active molecules vs.
+    interaction frequencies of inactive molecules.
     """
 
     name_a = None
@@ -438,6 +563,33 @@ class Comparison:
 
         """
         -- DESCRIPTION --
+        Constructor for initializing the comparison.
+          PARAMS:
+            - name_a (string): name of the first molecule group e.g. "Actives"
+            - name_b (string): name of the second molecule group e.g. "Decoys"
+            - frequencies_a (string or dict): frequencies of the first molecule
+                                              group. Can either be a dictionary
+                                              or path/name of json file
+            - frequencies_b (string or dict): frequencies of the second molecule
+                                              group. Can either be a dictionary
+                                              or path/name of json file
+            - is_file_a (bool): if PARAM "frequencies_a" is a json file
+                DEFAULT: False
+            - is_file_b (bool): if PARAM "frequencies_b" is a json file
+                DEFAULT: False
+          RETURNS:
+            None
+          ATTRIBUTES:
+            - name_a (string): set in constructor
+            - name_b (string): set in constructor
+            - frequencies_a (dict): set in constructor
+            - frequencies_b (dict): set in constructor
+            - comparison (dict of dicts): each interaction will be a key for a
+                                          dictionary containing keys
+                                          "difference", name_a, name_b and the
+                                          corresponding values. The dictionary
+                                          is sorted by "difference" in
+                                          descending order.
         """
 
         if is_file_a:
@@ -488,6 +640,26 @@ class Comparison:
 
         """
         -- DESCRIPTION --
+        Function for plotting a comparison bar chart of the frequencies in
+        active and inactive molecules.
+          PARAMS:
+            - title (string): title of the plot
+                DEFAULT: None (title will be auto-generated)
+            - filename (string): filename if/where generated plot should be
+                                 saved. If no filename is given the plot is not
+                                 saved. Allowed filename extensions are *.png
+                                 and *.jpg.
+                DEFAULT: None (plot will not be saved)
+            - width (int): width of the plot
+                DEFAULT: 20
+            - height (int): height of the plot
+                DEFAULT: 5
+            - sig_digits (int): significant digits shown above bars
+                DEFAULT: 2
+            - label_offset (float): space between bars and text
+                DEFAULT: 0.05
+          RETURNS:
+            - plot as matplotlib.pyplot.fig object
         """
 
         if title is None:
@@ -524,6 +696,9 @@ class Comparison:
 class Scoring:
     """
     -- DESCRIPTION --
+    Class for scoring preparation - this class features functions for preparing
+    the data for scoring NOT for scoring itself (which is implemented in
+    PIAScore).
     """
 
     pdb_entry_results = None
@@ -542,6 +717,32 @@ class Scoring:
 
         """
         -- DESCRIPTION --
+        Constructor for initializing scoring preparation.
+        Do note that PIA has to be run on the complete dataset / all structures
+        first before data partitioning and subsequent scoring!
+          PARAMS:
+            - pdb_entry_results (dict/string): results returned by PIA
+                                               (attribute with the same name)
+                                               can either be the dict returned
+                                               by PIA or a filename to a json
+                                               file containing the same
+                                               information
+            - best_pdb_entries (list of strings/string): results returned by PIA
+                                                         (attribute with the
+                                                         same name)
+                                                         can either be the list
+                                                         of strings returned by
+                                                         PIA or a filename to a
+                                                         json file containing
+                                                         the same information
+            - is_file (list of bool): if pdb_entry_results and best_pdb_entries
+                                      are files or not
+                DEFAULT: [False, False] (none of them are files)
+          RETURNS:
+            None
+          ATTRIBUTES:
+            - pdb_entry_results (dict): set in constructor
+            - best_pdb_entries (dict): set in constructor
         """
 
         if is_file[0]:
@@ -568,11 +769,34 @@ class Scoring:
 
         """
         -- DESCRIPTION --
+        Generate human-readable datasets that can be used for scoring with
+        PIAScore (and any other package that is able to read dataframes from csv
+        files). Data is split into 3 partitions as common practice in machine
+        learning. Sizes of the partitions can be chosen freely.
+          PARAMS:
+            - test_size (float; interval (0,1)): size of the test partition /
+                                                 fraction of the whole dataset
+                DEFAULT: 0.2 (20% of the whole dataset used for testing)
+            - val_size (float; intervall (0,1)): size of the validation
+                                                 partition
+                                                 fraction of the remaining 80%
+                                                 that is not used for testing
+                DEFAULT: 0.2 (20% of the remaining 80% is used for validation)
+            - train_output (string): name of the csv file for the training
+                                     partition
+                DEFAULT: "data_train.csv"
+            - val_output (string): name of the csv file for the validation
+                                   partition
+                DEFAULT: "data_val.csv"
+            - test_output (string): name of the csv file for the test partition
+                DEFAULT: "data_test.csv"
+          RETURNS:
+            - list of pandas dataframes [data_train, data_val, data_test]
         """
 
         # dummy label encoder
         def get_label(input):
-            if "inactive" in input or "decoy" in input:
+            if "inactive" in input.lower() or "decoy" in input.lower():
                 return "inactive"
             else:
                 return "active"
@@ -589,7 +813,7 @@ class Scoring:
             u_names.append(n)
         unique_names = list(set(u_names))
 
-        # split ligand names by train_size in train, val, test
+        # split ligand names by train_size and val_size in train, val, test
         names_train_val, names_test = train_test_split(unique_names, train_size = 1 - test_size, random_state = 42, shuffle = True)
         names_train, names_val = train_test_split(names_train_val, train_size = 1 - val_size, random_state = 1337, shuffle = True)
 
@@ -797,6 +1021,24 @@ class Scoring:
 
         """
         -- DESCRIPTION --
+        Extract active and inactive names and structures from one of the
+        partitions.
+          PARAMS:
+            - partition (string): on of "train", "val", "test".
+                                  from which partition to extract actives and
+                                  inactives
+                DEFAULT: "train" (actives and inactives are extracted from the
+                                  training partition)
+          RETURNS:
+            - dict with keys:
+                           - "active_structures" (list of strings):
+                              active structures file names
+                           - "active_names" (list of strings):
+                              active structures molecule names
+                           - "inactive_structures" (list of strings):
+                              inactive structures file names
+                           - "inactive_names" (list of strings):
+                              inactive structures molecule names
         """
 
         active_structures = []
@@ -835,19 +1077,32 @@ class Scoring:
 
         """
         -- DESCRIPTION --
+        Compare active and inactive structures from a specific data partition.
+          PARAMS:
+            - partition (string): one of "train", "val", "test".
+                                  in which partition structures should be
+                                  compared
+                DEFAULT: "train" (actives and inactives in the training
+                                  partition are compared)
+            - path (string): path to structure files
+                             accepts "", ".", "current" for current directory
+                DEFAULT: "current" (files are located in current directory)
+            - **kwargs: any additional PARAMS are passed to PIA()
+          RETURNS:
+            - Comparison class object
         """
 
         partition_info = self.get_actives_inactives(partition = partition)
 
         # get result for active ligands
-        result_actives = PLIPAnalyzer(partition_info["active_structures"],
-                                      ligand_names = partition_info["active_names"],
-                                      path = path, **kwargs)
+        result_actives = PIA(partition_info["active_structures"],
+                             ligand_names = partition_info["active_names"],
+                             path = path, **kwargs)
 
         # get result for inactive ligands
-        result_inactives = PLIPAnalyzer(partition_info["inactive_structures"],
-                                      ligand_names = partition_info["inactive_names"],
-                                      path = path, **kwargs)
+        result_inactives = PIA(partition_info["inactive_structures"],
+                               ligand_names = partition_info["inactive_names"],
+                               path = path, **kwargs)
 
         # get comparison
         comparison = Comparison("Actives", "Inactives",
@@ -864,6 +1119,15 @@ class Scoring:
 
         """
         -- DESCRIPTION --
+        Extract feature information from the training partition.
+          PARAMS:
+            - filename (string): if information should be written to file in csv
+                                 format
+                DEFAULT: None (feature information is not written to file)
+            - **kwargs: any additional PARAMS are passed to self.compare()
+          RETURNS:
+            - pandas dataframe of features (rows) and corresponding information
+              (columns)
         """
 
         comparison = self.compare(partition = "train", **kwargs).comparison
@@ -891,9 +1155,13 @@ class Scoring:
         return features
 
 
-class PLIPAnalyzer:
+class PIA:
     """
     -- DESCRIPTION --
+    Main class to extract interactions and their frequencies from a list of
+    protein-ligand complexes in pdb format. To detect interactions PIA makes use
+    of the Protein-Ligand Interaction Profiler (PLIP; PharmAI GmbH, Salentin et
+    al., 2015).
     """
 
     nr_structures = None
@@ -906,7 +1174,7 @@ class PLIPAnalyzer:
     pdb_entry_results = None
     best_pdb_entries = None
 
-    # constructor with plip analysis for docking sdf files with multiple poses
+    # constructor with plip analysis
     def __init__(self,
                  list_of_pdb_entries,
                  ligand_names = None,
@@ -921,6 +1189,111 @@ class PLIPAnalyzer:
 
         """
         -- DESCRIPTION --
+        Constructor for calculating all interactions and their corresponding
+        frequencies across the specified protein-ligand complexes.
+          PARAMS:
+            - list_of_pdb_entries (list of strings):
+                list of filenames to the protein-ligand complexes in pdb format
+            - ligand_names (list of strings):
+                list of ligand or molecule names of the pdb structures
+                DEFAULT: None
+                    ligand names will be auto-generated and it is assumed that
+                    all structures are distinct molecules (and not different
+                    poses of the same ligand)
+            - poses (string): one of "all", "best".
+                if multiple poses of the same ligand are present (e.g. from
+                docking) either all are analyzed or just the best (the pose with
+                the most interactions).
+                "best" only works if the molecules are named in the GOLD schema
+                e.g. 'LIG1_active|ligand|sdf|1|dock1'
+                DEFAULT: "all"
+            - path (string):
+                path to the pdb files
+                accepts "", ".", "current" for current directory
+                DEFAULT: "current"
+            - chain (string): any valid chain identifier (upper case letter)
+                on which chain interactions should be analyzed
+                DEFAULT: "A"
+            - exclude (list of strings):
+                one of ["LIG", "HOH"], ["LIG"], ["HOH"], [].
+                interactions to exclude where "LIG" denotes ligand-ligand
+                interactions and "HOH" denotes interactions with water (except
+                water bridges which are analyzed in all cases). For further
+                information refer to the implementation of PLIP
+                DEFAULT: ["LIG", "HOH"]
+                    default setting of PLIP, ligand-ligand interactions and
+                    interactions with water are excluded
+            - excluded_ligands (list of strings):
+                which ligands to not analyze e.g. artifacts, molecules used for
+                crystallization
+                DEFAULT: exclusion_list
+                pre-compiled list of common unwanted small molecules (see top of
+                the file). List can be extended by specifying (use upper case)
+                ``` exclusion_list + ["YOUR", "CUSTOM", "ENTRIES"] ```
+            - discard_exceeding_hc (bool):
+                remove any redundant hydrophobic interactions or not
+                DEFAULT: True
+                    hydrophobic interactions will only be counted once per
+                    protein-ligand complex
+            - normalize (bool):
+                normalize frequencies by the number of structures or take
+                absolute frequencies
+                DEFAULT: True
+                    frequencies are normalized by the number of structures
+            - verbose (bool/int): one of False, True, 0, 1.
+                print progress information
+                DEFAULT: 1
+                    progress information is printed
+          RETURNS:
+            None
+          ATTRIBUTES:
+            - nr_structures (int): number of analyzed structures
+            - normalized (bool): wether or not frequencies are normalized
+            - i_frequencies (dict):
+                every interaction is a key, every value is the corresponding
+                frequency of that interaction e.g.
+                `i_frequencies["Pi-Stacking:TRP336A"] = 1.7142857142857137`
+                sorted by frequency (highest to lowest)
+            - i_structures (dict):
+                every interactions is a key, every value is a list of structures
+                containing that interaction e.g.
+                `i_structures["Pi-Stacking:TRP336A"] = ["mol1.pdb", "mol3.pdb"]`
+                sorted by frequency (highest to lowest)
+            - result (dict):
+                a combination of i_frequencies and i_structures
+                result is a dictionary containing interactions as keys and dicts
+                as values which have the keys "frequency" and "structures". The
+                key "frequency" returns the frequency of that interaction, the
+                key "structures" returns a list of structures that contain this
+                interaction e.g.
+                ```
+                results["Pi-Stacking:TRP336A"] = \
+                    {"frequency": 1.7142857142857137,
+                     "structures": ["mol1.pdb", "mol3.pdb"]
+                    }
+                ```
+                sorted by frequency (highest to lowest)
+            - pdb_entry_results (dict):
+                dictionary with pdb entry/filename as key e.g. for a complex
+                LIG1.pdb the input `pdb_entry_results["LIG1.pdb"]` would return
+                the following dictionary:
+                ```
+                    {"ligand_name": name of the ligand/molecule,
+                     "nr_of_interactions": number of interactions detected in
+                                           the protein-ligand complex,
+                     "interactions": {"Salt_Bridges": list of salt bridges,
+                                      "Hydrogen_Bonds": list of hydrogen bonds,
+                                      "Pi_Stacking": list of pi stacking inter.,
+                                      "Pi_Cation_Interactions": list of ...,
+                                      "Hydrophobic_Contacts": list of ...,
+                                      "Halogen_Bonds": list of ...,
+                                      "Water_Bridges": list of ...,
+                                      "Metal_Complexes": list of ...}
+                                     }
+            - best_pdb_entries (list of strings):
+                list of filenames for the best poses of each ligand
+                if poses = "all" was specified this will be just a list of all
+                filenames for all structures
         """
 
         INTERACTION_FREQ = {}
@@ -937,7 +1310,10 @@ class PLIPAnalyzer:
             unique_ligand_names.append("|".join(ligand_name.split("|")[:-1]))
 
         # set attributes
-        self.nr_structures = len(set(unique_ligand_names))
+        if poses == "best":
+            self.nr_structures = len(set(unique_ligand_names))
+        else:
+            self.nr_structures = len(list_of_pdb_entries)
         self.normalized = normalize
 
         # constant for absolute / normalized frequencies
@@ -1067,7 +1443,7 @@ class PLIPAnalyzer:
 
         for pdb_entry in entries_to_be_used:
 
-            # get interactions from dictonary
+            # get interactions from dictionary
             Salt_Bridges = pdb_entry_results[pdb_entry]["interactions"]["Salt_Bridges"]
             Hydrogen_Bonds = pdb_entry_results[pdb_entry]["interactions"]["Hydrogen_Bonds"]
             Pi_Stacking = pdb_entry_results[pdb_entry]["interactions"]["Pi_Stacking"]
@@ -1077,7 +1453,7 @@ class PLIPAnalyzer:
             Water_Bridges = pdb_entry_results[pdb_entry]["interactions"]["Water_Bridges"]
             Metal_Complexes = pdb_entry_results[pdb_entry]["interactions"]["Metal_Complexes"]
 
-            # build dictonary
+            # build dictionary
             for sb_residue in Salt_Bridges:
                 k = "Salt_Bridge:" + sb_residue
                 if k in INTERACTION_FREQ:
@@ -1220,10 +1596,31 @@ class PLIPAnalyzer:
         self.best_pdb_entries = best_pdb_entries
 
     # save results as json with a given prefix
-    def save(self, prefix, save_pdb_entry_results = False):
+    def save(self,
+             prefix,
+             save_pdb_entry_results = False,
+             save_best_pdb_entries = False):
 
         """
         -- DESCRIPTION --
+        Save results in json format.
+          PARAMS:
+            - prefix (string): any valid path or filename
+                note that ATTRIBUTES will receive the following suffixes when
+                saved:
+                  result: "_result.json"
+                  i_frequencies: "_frequencies.json"
+                  i_structures: "_structures.json"
+                  pdb_entry_results: "_pdb_entry_results.json"
+                  best_pdb_entries: "_best_pdb_entries.json"
+            - save_pdb_entry_results (bool):
+                save ATTRIBUTE pdb_entry_results or not
+                DEFAULT: False
+            - save_best_pdb_entries (bool):
+                save ATTRIBUTE best_pdb_entries or not
+                DEFAULT: False
+          RETURNS:
+            - filenames (list of strings): filenames of the created files
         """
 
         filename_1 = prefix + "_result.json"
@@ -1241,20 +1638,35 @@ class PLIPAnalyzer:
             json.dump(self.i_structures, f)
             f.close()
 
+        filenames = [filename_1, filename_2, filename_3]
+
         if save_pdb_entry_results:
             filename_4 = prefix + "_pdb_entry_results.json"
             with open(filename_4, "w") as f:
                 json.dump(self.pdb_entry_results, f)
                 f.close()
-            return [filename_1, filename_2, filename_3, filename_4]
-        else:
-            return [filename_1, filename_2, filename_3]
+            filenames.append(filename_4)
+
+        if save_best_pdb_entries:
+            filename_5 = prefix + "_best_pdb_entries.json"
+            with open(filename_5, "w") as f:
+                json.dump(self.best_pdb_entries, f)
+                f.close()
+            filenames.append(filename_5)
+
+        return filenames
 
     # save frequencies as csv
     def to_csv(self, filename):
 
         """
         -- DESCRIPTION --
+        Save frequency information in csv format, delimited by ";" and with a
+        header line.
+          PARAMS:
+            - filename (string): name of the output file
+          RETURNS:
+            - frequencies_csv (string): content of the csv file
         """
 
         frequencies_csv = "Interaction;Frequency\n"
@@ -1278,6 +1690,24 @@ class PLIPAnalyzer:
 
         """
         -- DESCRIPTION --
+        Plot interactions and their frequencies in a bar chart.
+          PARAMS:
+            - title (string): title of the plot
+            - filename (string): filename if/where generated plot should be
+                                 saved. If no filename is given the plot is not
+                                 saved. Allowed filename extensions are *.png
+                                 and *.jpg.
+                DEFAULT: None (plot will not be saved)
+            - width (int): width of the plot
+                DEFAULT: 20
+            - height (int): height of the plot
+                DEFAULT: 5
+            - sig_digits (int): significant digits shown above bars
+                DEFAULT: 4
+            - label_offset (float): space between bars and text
+                DEFAULT: None (label offset will be auto-calculated)
+          RETURNS:
+            - plot as matplotlib.pyplot.fig object
         """
 
         # set label offset if not specified
