@@ -1,4 +1,4 @@
-Results* generated with the following versions of PLIPAnalyzer:
+Results* generated with the following versions of PIA:
 *excluding scoring results
 
 11-Beta-Hydroxysteroid Dehydrogenase 1  | 0.5.1
