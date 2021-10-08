@@ -18,13 +18,13 @@ from shutil import copyfile
 
 if __name__ == '__main__':
 
-    # copy most recent version of PLIPAnalyzer to directory
-    copyfile("../../scripts/python/PLIPAnalyzer.py", "PLIPAnalyzer.py")
+    # copy most recent version of PIA to directory
+    copyfile("../../scripts/python/PIA.py", "PIA.py")
 
-    # import PLIPAnalyzer
-    from PLIPAnalyzer import PLIPAnalyzer as pa
-    from PLIPAnalyzer import Preparation as prep
-    from PLIPAnalyzer import Comparison as paComp
+    # import PIA
+    from PIA import PIA as pa
+    from PIA import Preparation as prep
+    from PIA import Comparison as paComp
 
     enabled_1 = True
     enabled_2 = True
@@ -61,7 +61,7 @@ if __name__ == '__main__':
             f.close()
 
     if enabled_2:
-        # PLIPAnalyzer - actives
+        # PIA - actives
         result = pa(actives_structures, ligand_names = actives_names, poses = "best", path = "current")
         r = result.save("results/sEH_6hgv_results_actives")
         print("Result saved in:")
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
 
     if enabled_3:
-        # PLIPAnalyzer - inactives
+        # PIA - inactives
         result = pa(inactives_structures, ligand_names = inactives_names, poses = "best", path = "current")
         r = result.save("results/sEH_6hgv_results_inactives")
         print("Result saved in:")
@@ -91,4 +91,4 @@ if __name__ == '__main__':
         comp.plot("Comparison sEH_6hgv_results.sdf: Actives vs. Inactives", filename = "results/sEH_6hgv_results_comparison.png")
 
     # clean up
-    os.remove("PLIPAnalyzer.py")
+    os.remove("PIA.py")
