@@ -7,6 +7,10 @@
 
 """
 DESCRIPTION
+A workflow to prepare docked active and inactive ligands for scoring based on
+their interaction-frequencies. This script only preprocesses the data and
+analyzes the protein-ligand complexes, the scoring itself is carried out in the
+jupyter notebook "scoring.ipynb".
 """
 
 import os
