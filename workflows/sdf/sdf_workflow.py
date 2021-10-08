@@ -18,12 +18,12 @@ from shutil import copyfile
 
 if __name__ == '__main__':
 
-    # copy most recent version of PLIPAnalyzer to directory
-    copyfile("../../scripts/python/PLIPAnalyzer.py", "PLIPAnalyzer.py")
+    # copy most recent version of PIA to directory
+    copyfile("../../scripts/python/PIA.py", "PIA.py")
 
-    # import PLIPAnalyzer
-    from PLIPAnalyzer import PLIPAnalyzer as pa
-    from PLIPAnalyzer import Preparation as prep
+    # import PIA
+    from PIA import PIA as pa
+    from PIA import Preparation as prep
 
     enabled_1 = True
     enabled_2 = True
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     structures = p.add_ligands_multi("6hgv_cleaned.pdb", "structures", ligands)
 
     if enabled_1:
-        # PLIPAnalyzer
+        # PIA
         result = pa(structures, path = "current", normalize = False)
         r = result.save("results/results_vs_6hgv_6A_Gold")
         print("Result saved in:")
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         result.plot("results_vs_6hgv_6A_Gold", filename = "results/results_vs_6hgv_6A_Gold.png")
 
     if enabled_2:
-        # PLIPAnalyzer - normalized
+        # PIA - normalized
         result = pa(structures, path = "current")
         r = result.save("results/results_normalized_vs_6hgv_6A_Gold")
         print("Result saved in:")
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         result.plot("results_vs_6hgv_6A_Gold", filename = "results/results_normalized_vs_6hgv_6A_Gold.png")
 
     if enabled_3:
-        # PLIPAnalyzer - best poses only
+        # PIA - best poses only
         result = pa(structures, ligand_names = ligand_names, poses = "best", path = "current", normalize = False)
         r = result.save("results/results_best_vs_6hgv_6A_Gold")
         print("Result saved in:")
@@ -80,7 +80,7 @@ if __name__ == '__main__':
             f.close()
 
     if enabled_4:
-        # PLIPAnalyzer - best poses only, normalized
+        # PIA - best poses only, normalized
         result = pa(structures, ligand_names = ligand_names, poses = "best", path = "current")
         r = result.save("results/results_best_normalized_vs_6hgv_6A_Gold")
         print("Result saved in:")
@@ -90,4 +90,4 @@ if __name__ == '__main__':
         result.plot("results_best_vs_6hgv_6A_Gold", filename = "results/results_best_normalized_vs_6hgv_6A_Gold.png")
 
     # clean up
-    os.remove("PLIPAnalyzer.py")
+    os.remove("PIA.py")
