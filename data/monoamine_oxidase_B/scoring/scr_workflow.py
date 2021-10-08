@@ -15,14 +15,14 @@ from shutil import copyfile
 
 if __name__ == '__main__':
 
-    # copy most recent version of PLIPAnalyzer to directory
-    copyfile("../../../scripts/python/PLIPAnalyzer.py", "PLIPAnalyzer.py")
+    # copy most recent version of PIA to directory
+    copyfile("../../../scripts/python/PIA.py", "PIA.py")
 
-    # import PLIPAnalyzer
-    from PLIPAnalyzer import PLIPAnalyzer as pa
-    from PLIPAnalyzer import Preparation as prep
-    from PLIPAnalyzer import Comparison as paComp
-    from PLIPAnalyzer import Scoring as paScore
+    # import PIA
+    from PIA import PIA as pa
+    from PIA import Preparation as prep
+    from PIA import Comparison as paComp
+    from PIA import Scoring as paScore
 
     enabled_1 = True
     enabled_2 = True
@@ -81,4 +81,4 @@ if __name__ == '__main__':
 
     # clean up
     os.remove("MOAB_2XCG_results.sdf")
-    os.remove("PLIPAnalyzer.py")
+    os.remove("PIA.py")
