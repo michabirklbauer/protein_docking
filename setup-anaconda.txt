@@ -8,5 +8,3 @@ pip install numpy
 pip install lxml
 pip install plip --no-deps
 pip install streamlit
-
- 
