@@ -1,8 +1,8 @@
 MIT License
 
-Copyright (c) 2021 Micha Johannes Birklbauer, MSc
-Copyright (c) 2021 Mag. Veronika Temml, PhD
-Copyright (c) 2021 Univ. Prof. Dr. Daniela Schuster
+Copyright (c) 2021 Micha Johannes Birklbauer, MSc  
+Copyright (c) 2021 Mag. Veronika Temml, PhD  
+Copyright (c) 2021 Univ. Prof. Dr. Daniela Schuster  
 Copyright (c) 2021 Paracelsus Medizinische Privatuniversität Salzburg
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
