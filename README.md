@@ -14,29 +14,29 @@ Molecular docking is an important tool in virtual screening for the discovery an
 
 ## Docker Usage
 
-Either manually build the image using the provided Dockerfile or pull it from dockerhub [michabirklbauer/protein_docking:latest](https://hub.docker.com/r/michabirklbauer/protein_docking). To manually build the image run the following command:
+Either manually build the image using the provided Dockerfile or pull it from dockerhub via [michabirklbauer/protein_docking:latest](https://hub.docker.com/r/michabirklbauer/protein_docking). To manually build the image run the following command:
 
 ```bash
 docker image build -f Dockerfile -t pia:latest .
 ```
 
-Once the image is built or downloaded you should create a directory that can be mounted to the container to share files e.g. in Windows 10 create a directory on drive C: called `docker_share`. You will have to add this directory in Docker Settings > Resources > File Sharing and restart Docker. Then the container can be run with:
+Once the image is built or downloaded you should create a directory that can be mounted to the container to share files e.g. in Windows 10 create a directory on drive `C:` called `docker_share`. You will have to add this directory in Docker *Settings > Resources > File Sharing* and restart Docker. Then the container can be run with:
 
 ```bash
-docker run -v C:\\docker_share:/exchange -p 8888:8888 -it pia:latest
+docker run -v C:\docker_share:/exchange -p 8888:8888 -it pia:latest
 ```
 
-This will mount the directory `C:/docker_share` to the directory `/exchange` in the container and files can be shared freely by copy-pasting into those directories. Python can be run normally in the container and PIA can be imported without needing to install any requirements. To launch jupyter lab on the container you need to run the command:
+This will mount the directory `C:/docker_share` to the directory `/exchange` in the container and files can be shared freely by copy-pasting into those directories. Python can be run normally in the container and PIA can be imported without needing to install any requirements. To launch [JupyterLab](https://jupyter.org/) in the container you need to run the command:
 
 ```bash
 jupyter lab --ip=0.0.0.0 --port=8888 --allow-root
 ```
 
-Jupyter lab can then be accessed from the browser via the given link.
+JupyterLab can then be accessed from any browser via the given link.
 
 ## Further Development
 
-PIA will have its standalone repository with more polishing and documentation in [github.com/michabirklbauer/pia](https://github.com/michabirklbauer/PIA). For help or issues with PIA that are not directly connected to the work in this thesis please refer to that repository instead.
+PIA will have its standalone repository with more polishing and documentation in [github.com/michabirklbauer/pia](https://github.com/michabirklbauer/PIA). For help or issues with PIA that are not directly connected to the work in this thesis please refer to that repository instead!
 
 ## Contact
 
