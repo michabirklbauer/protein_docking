@@ -24,7 +24,7 @@ PIA largely builds upon [BioPandas](https://github.com/rasbt/biopandas), [RDKit]
 Either manually build the image using the provided Dockerfile:
 
 ```bash
-docker image build -f Dockerfile -t protein_docking:latest .
+docker image build -f Dockerfile -t michabirklbauer/protein_docking:latest .
 ```
 
 OR pull it from dockerhub via [michabirklbauer/protein_docking:latest](https://hub.docker.com/r/michabirklbauer/protein_docking):
@@ -36,7 +36,7 @@ docker pull michabirklbauer/protein_docking:latest
 Once the image is built or downloaded you should create a directory that can be mounted to the container to share files e.g. in Windows 10 create a directory on drive `C:` called `docker_share`. You will have to add this directory in Docker *Settings > Resources > File Sharing* and restart Docker. Then the container can be run with:
 
 ```bash
-docker run -v C:\docker_share:/exchange -p 8888:8888 -it protein_docking:latest
+docker run -v C:\docker_share:/exchange -p 8888:8888 -it michabirklbauer/protein_docking:latest
 ```
 
 This will mount the directory `C:/docker_share` to the directory `/exchange` in the container and files can be shared freely by copy-pasting into those directories. Python can be run normally in the container and PIA can be imported without needing to install any requirements. To launch [JupyterLab](https://jupyter.org/) in the container you need to run the command:
