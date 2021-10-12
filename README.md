@@ -21,7 +21,7 @@ PIA largely builds upon [BioPandas](https://github.com/rasbt/biopandas), [RDKit]
 
 ## Docker Usage
 
-Either manually build the image using the provided Dockerfile:  To manually build the image run the following command:
+Either manually build the image using the provided Dockerfile:
 
 ```bash
 docker image build -f Dockerfile -t protein_docking:latest .
@@ -30,7 +30,7 @@ docker image build -f Dockerfile -t protein_docking:latest .
 OR pull it from dockerhub via [michabirklbauer/protein_docking:latest](https://hub.docker.com/r/michabirklbauer/protein_docking):
 
 ```bash
-docker pull michabirklbauer/protein_docking
+docker pull michabirklbauer/protein_docking:latest
 ```
 
 Once the image is built or downloaded you should create a directory that can be mounted to the container to share files e.g. in Windows 10 create a directory on drive `C:` called `docker_share`. You will have to add this directory in Docker *Settings > Resources > File Sharing* and restart Docker. Then the container can be run with:
